@@ -1,0 +1,45 @@
+.EditorLayout {
+  padding-left: 0;
+  transition: padding-left 0.3s;
+}
+
+/* .EditorLayout__showMobileConfigBar {
+  padding-left: 320px;
+} */
+
+@media (min-width: 768px) {
+  .EditorLayout {
+    padding-left: 320px;
+  }
+}
+
+.EditorLayout_configBarContainer {
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 320px;
+
+  transform: translateX(-320px);
+  transition: transform 0.3s;
+}
+
+.EditorLayout__showMobileConfigBar .EditorLayout_configBarContainer {
+  transform: translateX(0px);
+}
+
+@media (min-width: 768px) {
+  .EditorLayout .EditorLayout_configBarContainer {
+    transform: translateX(0px);
+  }
+}
+
+.EditorLayout_toggleConfigBarBtn {
+  display: block;
+}
+@media (min-width: 768px) {
+  .EditorLayout_toggleConfigBarBtn {
+    display: none;
+  }
+}
