@@ -3,6 +3,7 @@ import {
   type FocusEvent,
   MouseEventHandler,
   useCallback,
+  useEffect,
   useState,
 } from "react";
 import { useDrag } from "react-dnd";
@@ -36,7 +37,8 @@ export const EditingText: FC<Props> = ({
 
   const boxStyle = { width: `${dims.w}px`, height: `${dims.h}px` };
 
-  const resizeFrame: MouseEventHandler<HTMLDivElement> = (e) => {
+  const resizeFrame = (e: MouseEvent) => {
+    console.log("resizeFrame");
     const { active, x, y } = drag;
     if (active) {
       const xDiff = Math.abs(+x - e.clientX);
@@ -49,11 +51,13 @@ export const EditingText: FC<Props> = ({
     }
   };
 
-  const stopResize: MouseEventHandler<HTMLDivElement> = () => {
+  const stopResize = () => {
+    console.log("stopResize");
     setDrag({ ...drag, active: false });
   };
 
   const startResize: MouseEventHandler<HTMLButtonElement> = (e) => {
+    console.log("startResize");
     e.preventDefault();
     e.stopPropagation();
     setDrag({
@@ -62,6 +66,23 @@ export const EditingText: FC<Props> = ({
       y: `${e.clientY}`,
     });
   };
+
+  useEffect(() => {
+    // if (drag.active) {
+    //   document.body.style.cursor = "se-resize";
+    // } else {
+    //   document.body.style.cursor = "auto";
+    // }
+    const parent = document.getElementById("fixed-mobile-board") as HTMLDivElement;
+    parent.addEventListener("mousemove", resizeFrame);
+    parent.addEventListener("mouseup", stopResize);
+    parent.addEventListener("mouseleave", stopResize);
+    return () => {
+      parent.removeEventListener("mousemove", resizeFrame);
+      parent.removeEventListener("mouseup", stopResize);
+      parent.removeEventListener("mouseleave", stopResize);
+    };
+  }, [drag, dims]);
 
   const onContentBlur = useCallback(
     (evt: FocusEvent) => {
@@ -96,15 +117,15 @@ export const EditingText: FC<Props> = ({
         width: "fit-content",
         height: "fit-content",
       }}
-      onMouseMove={resizeFrame} // TODO: this event should be in mobile frame, not text container
-      onMouseUp={stopResize}
-      onMouseLeave={stopResize}
+      // onMouseMove={resizeFrame} // TODO: this event should be in mobile frame, not text container
+      // onMouseUp={stopResize}
+      // onMouseLeave={stopResize}
     >
       <div
         onBlur={onContentBlur}
         contentEditable
         dangerouslySetInnerHTML={{ __html: `${html}` }}
-        style={{ cursor: "text", ...boxStyle }}
+        style={{ cursor: "text", ...boxStyle, minWidth: "fit-content", minHeight: "fit-content" }}
       />
       <button
         className="dragger"

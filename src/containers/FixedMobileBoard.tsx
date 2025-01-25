@@ -49,6 +49,7 @@ export const FixedMobileBoard: FC<Props> = ({
 
   return (
     <div
+      id="fixed-mobile-board"
       ref={forkedRef}
       style={{
         border: "1px solid white",
