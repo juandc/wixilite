@@ -1,28 +1,35 @@
-import { useCallback, useState, type FocusEvent } from "react";
+import { useCallback, type FocusEvent, type FC } from "react";
 import { useDrag } from "react-dnd";
 import sanitizeHtml from 'sanitize-html';
+import type { IFixedElementEditingText } from "@/types";
 import { dndTypes } from "@/constants/dnd";
 
-export const EditingText = () => {
-  const [value, setValue] = useState<string[]>(["EditingText"]);
+type Props = {
+  editText: (text: string[]) => void;
+} & IFixedElementEditingText;
+
+export const EditingText: FC<Props> = ({
+  editText,
+  ...props
+}) => {
+  const { data: { x, y, text } } = props;
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: dndTypes.EDITING_TEXT,
-      item: {},
+      item: { ...props },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
       isDragging() {
-        // close configbar
         console.log("Dragging editting text");
         return true;
       },
-      end: (_, monitor) => {
-        const didDrop = monitor.didDrop()
-        if (!didDrop) {
-          // open configbar
-        }
-      },
+      // end: (_, monitor) => {
+      //   const didDrop = monitor.didDrop();
+      //   if (!didDrop) {
+      //     // open configbar
+      //   }
+      // },
     }),
     [],
   );
@@ -39,12 +46,12 @@ export const EditingText = () => {
         .split('<br>')
         .map(sanitize)
         .filter((v) => v.length);
-      setValue(newValue);
+      editText(newValue);
     },
     []
   );
 
-  const html = value.map(v => `<p>${v}</p>`).join("");
+  const html = text.map(v => `<p>${v}</p>`).join("");
 
   return (
     <div
@@ -53,12 +60,19 @@ export const EditingText = () => {
         opacity: isDragging ? 0.5 : 1,
         width: "fit-content",
         position: "absolute",
-        top: 0,
-        left: 0,
+        padding: ".5rem",
+        border: "1px solid rgba(255,255,255,.1)",
+        cursor: "move",
+        top: y,
+        left: x,
       }}
-      onBlur={onContentBlur}
-      contentEditable
-      dangerouslySetInnerHTML={{ __html: `${html}` }}
-    />
+    >
+      <div
+        onBlur={onContentBlur}
+        contentEditable
+        dangerouslySetInnerHTML={{ __html: `${html}` }}
+        style={{ cursor: "text" }}
+      />
+    </div>
   );
 };
