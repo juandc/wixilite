@@ -9,9 +9,10 @@ export const AddText = () => {
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      isDragging(monitor) {
+      isDragging() {
         // close configbar
-        return monitor.getItemType() === dndTypes.ADD_TEXT;
+        console.log("Dragging add text");
+        return true;
       },
       end: (_, monitor) => {
         const didDrop = monitor.didDrop()

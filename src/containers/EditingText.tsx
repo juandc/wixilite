@@ -4,14 +4,15 @@ import { dndTypes } from "@/constants/dnd";
 export const EditingText = () => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
-      type: dndTypes.ADD_TEXT,
+      type: dndTypes.EDITING_TEXT,
       item: {},
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      isDragging(monitor) {
+      isDragging() {
         // close configbar
-        return monitor.getItemType() === dndTypes.ADD_TEXT;
+        console.log("Dragging editting text");
+        return true;
       },
       end: (_, monitor) => {
         const didDrop = monitor.didDrop()
@@ -24,7 +25,13 @@ export const EditingText = () => {
   );
 
   return (
-    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div ref={drag} style={{
+      opacity: isDragging ? 0.5 : 1,
+      width: "fit-content",
+      position: "absolute",
+      top: 0,
+      left: 0,
+    }}>
       Edit me (text)
     </div>
   );

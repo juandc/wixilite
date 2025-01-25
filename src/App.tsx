@@ -5,7 +5,6 @@ import { FixedMobileBoard } from "@/containers/FixedMobileBoard";
 import { AddText } from "@/containers/AddText";
 import { EditingText } from "@/containers/EditingText";
 import { DeviceTabs, EditorLayout } from "@/components";
-import "./App.css";
 
 type Layouts = "fixed" | "responsive";
 
@@ -41,8 +40,6 @@ export const App = () => {
 
           {layout === "fixed" && (
             <div>
-              Board area
-
               <DeviceTabs
                 selected={tab}
                 setMobile={setMobileTab}
@@ -52,7 +49,6 @@ export const App = () => {
               {tab === "mobile" && (
                 <div>
                   <FixedMobileBoard>
-                    Board mobile
                     <EditingText />
                   </FixedMobileBoard>
                 </div>
