@@ -48,15 +48,18 @@ export const FixedMobileBoard: FC<Props> = ({
   const forkedRef = useForkRef(boundingRef, drop);
 
   return (
-    <div ref={forkedRef} style={{
-      border: "1px solid white",
-      borderColor: canDrop ? "red" : "white",
-      backgroundColor: isOver ? "red" : "transparent",
-      width: "320px",
-      minHeight: "400px",
-      margin: "0 auto",
-      position: "relative",
-    }}>
+    <div
+      ref={forkedRef}
+      style={{
+        border: "1px solid white",
+        borderColor: canDrop ? "red" : "white",
+        backgroundColor: isOver ? "red" : "transparent",
+        width: "320px",
+        minHeight: "400px",
+        margin: "0 auto",
+        position: "relative",
+      }}
+    >
       {children}
     </div>
   );

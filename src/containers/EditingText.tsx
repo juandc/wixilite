@@ -36,16 +36,6 @@ export const EditingText: FC<Props> = ({
 
   const boxStyle = { width: `${dims.w}px`, height: `${dims.h}px` };
 
-  const startResize: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDrag({
-      active: true,
-      x: `${e.clientX}`,
-      y: `${e.clientY}`,
-    });
-  };
-
   const resizeFrame: MouseEventHandler<HTMLDivElement> = (e) => {
     const { active, x, y } = drag;
     if (active) {
@@ -61,6 +51,16 @@ export const EditingText: FC<Props> = ({
 
   const stopResize: MouseEventHandler<HTMLDivElement> = () => {
     setDrag({ ...drag, active: false });
+  };
+
+  const startResize: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDrag({
+      active: true,
+      x: `${e.clientX}`,
+      y: `${e.clientY}`,
+    });
   };
 
   const onContentBlur = useCallback(
@@ -98,6 +98,7 @@ export const EditingText: FC<Props> = ({
       }}
       onMouseMove={resizeFrame} // TODO: this event should be in mobile frame, not text container
       onMouseUp={stopResize}
+      onMouseLeave={stopResize}
     >
       <div
         onBlur={onContentBlur}
