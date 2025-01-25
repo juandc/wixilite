@@ -1,18 +1,18 @@
 
 import { useState } from "react";
+import type { IDevices } from "./types";
 import { FixedMobileBoard } from "@/containers/FixedMobileBoard";
 import { AddText } from "@/containers/AddText";
 import { EditingText } from "@/containers/EditingText";
-import { EditorLayout } from "@/components";
+import { DeviceTabs, EditorLayout } from "@/components";
 import "./App.css";
 
 type Layouts = "fixed" | "responsive";
-type Tabs = "mobile" | "desktop";
 
 export const App = () => {
   const [showConfigBar, setShowConfigBar] = useState<boolean>(false);
   const [layout, setLayout] = useState<Layouts | undefined>(undefined);
-  const [tab, setTab] = useState<Tabs>("mobile");
+  const [tab, setTab] = useState<IDevices>("mobile");
 
   const setMobileTab = () => setTab("mobile");
   const setDesktopTab = () => setTab("desktop");
@@ -43,10 +43,11 @@ export const App = () => {
             <div>
               Board area
 
-              <div>
-                <button onClick={setMobileTab}>Mobile</button>
-                <button onClick={setDesktopTab}>Desktop</button>
-              </div>
+              <DeviceTabs
+                selected={tab}
+                setMobile={setMobileTab}
+                setDesktop={setDesktopTab}
+              />
 
               {tab === "mobile" && (
                 <div>

@@ -1,15 +1,14 @@
 .EditorLayout {
+  --config-bar-width: 320px;
+  --toggle-config-bar-size: 40px;
+  --toggle-config-bar-area-margin: calc(var(--toggle-config-bar-size) + 1rem);
   padding-left: 0;
   transition: padding-left 0.3s;
 }
 
-/* .EditorLayout__showMobileConfigBar {
-  padding-left: 320px;
-} */
-
 @media (min-width: 768px) {
   .EditorLayout {
-    padding-left: 320px;
+    padding-left: var(--config-bar-width);
   }
 }
 
@@ -19,9 +18,11 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 320px;
+  width: var(--config-bar-width);
+  padding-top: var(--toggle-config-bar-area-margin);
+  z-index: var(--zindex-level-1);
 
-  transform: translateX(-320px);
+  transform: translateX(calc(-1 * var(--config-bar-width)));
   transition: transform 0.3s;
 }
 
@@ -32,14 +33,36 @@
 @media (min-width: 768px) {
   .EditorLayout .EditorLayout_configBarContainer {
     transform: translateX(0px);
+    padding-top: 0;
   }
 }
 
 .EditorLayout_toggleConfigBarBtn {
-  display: block;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  height: var(--toggle-config-bar-size);
+  width: var(--toggle-config-bar-size);
+  padding: 0;
+  z-index: var(--zindex-level-2);
+
+  display: flex;
 }
 @media (min-width: 768px) {
   .EditorLayout_toggleConfigBarBtn {
     display: none;
+  }
+}
+
+.EditorLayout_boardContainer {
+  padding-top: var(--toggle-config-bar-area-margin);
+  position: relative;
+  min-height: 100dvh;
+  width: 100dvw;
+}
+@media (min-width: 768px) {
+  .EditorLayout_boardContainer {
+    width: calc(100dvw - var(--config-bar-width));
   }
 }
