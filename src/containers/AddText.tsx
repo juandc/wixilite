@@ -1,11 +1,12 @@
+import { type FC } from "react";
 import { useDrag } from "react-dnd";
 import { dndTypes } from "@/constants/dnd";
 
-export const AddText = () => {
+export const AddText: FC = () => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: dndTypes.ADD_TEXT,
-      item: {},
+      item: { type: "fixed--new-text" },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),

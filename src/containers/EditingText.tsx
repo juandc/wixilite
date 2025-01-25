@@ -31,7 +31,7 @@ export const EditingText: FC<Props> = ({
       //   }
       // },
     }),
-    [],
+    [props],
   );
 
   const onContentBlur = useCallback(

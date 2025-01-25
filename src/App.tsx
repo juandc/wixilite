@@ -40,6 +40,18 @@ export const App = () => {
   const [elements, setElements] = useState<IFixedElementsDict>(() => initialElements);
   const elementIds = Object.keys(elements);
 
+  const addElement = (x: number, y: number) => {
+    const id = `${Math.random()}`;
+    setElements(prev => ({
+      ...prev,
+      [id]: {
+        id,
+        type: "fixed--editing-text",
+        data: { x, y, text: ["New Text"], },
+      },
+    }));
+  };
+
   const moveElement = (id: string) => (x: number, y: number) => {
     setElements(prev => ({
       ...prev,
@@ -93,10 +105,11 @@ export const App = () => {
               {tab === "mobile" && (
                 <div>
                   <FixedMobileBoard
+                    addElement={addElement}
                     moveElement={moveElement}
                   >
                     {elementIds.map((elementId) => {
-                      const element = elements[elementId];
+                      const element = { ...elements[elementId] };
                       if (element.type === "fixed--editing-text") {
                         return (
                           <EditingText

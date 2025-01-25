@@ -9,15 +9,10 @@ export type IFixedElementEditingText = {
 };
 
 export type IFixedElementNewText = {
-  id: string;
   type: "fixed--new-text";
-  data: {
-    x: number;
-    y: number;
-    text: string[];
-  };
 };
 
-export type IFixedElement = IFixedElementEditingText | IFixedElementNewText;
+export type IFixedElement = IFixedElementEditingText;
+export type IDraggableFixedElement = IFixedElementEditingText | IFixedElementNewText;
 
 export type IFixedElementsDict = Record<string, IFixedElement>;

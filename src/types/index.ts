@@ -4,5 +4,6 @@ export type {
   IFixedElementEditingText,
   IFixedElementNewText,
   IFixedElement,
+  IDraggableFixedElement,
   IFixedElementsDict,
 } from "./IFixedLayout";
