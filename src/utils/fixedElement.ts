@@ -41,6 +41,22 @@ export const moveElementInElementsDict = (id: string, x: number, y: number) => {
   };
 };
 
+export const resizeElementInElementsDict = (id: string, h: number, w: number) => {
+  return (elements: IFixedElementsDict): IFixedElementsDict => {
+    return {
+      ...elements,
+      [id]: {
+        ...elements[id],
+        data: {
+          ...elements[id].data,
+          h,
+          w,
+        },
+      },
+    };
+  };
+};
+
 export const editTextInElementsDict = (id: string, text: string[]) => {
   return (elements: IFixedElementsDict): IFixedElementsDict => {
     return {

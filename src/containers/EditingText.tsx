@@ -13,18 +13,20 @@ import { dndTypes } from "@/constants/dnd";
 
 type Props = {
   editText: (text: string[]) => void;
+  resize: (h: number, w: number) => void;
   selected: boolean;
   selectElement: () => void;
 } & IFixedElementEditingText;
 
 export const EditingText: FC<Props> = ({
   editText,
+  resize,
   selected,
   selectElement,
   ...item
 }) => {
   const {
-    data: { text, x, y },
+    data: { text, x, y, h, w },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -38,11 +40,12 @@ export const EditingText: FC<Props> = ({
     [item],
   );
 
+  // Oli Juan de más tarde, cambia el nombre de estos estados, que no se confinda con el resto de funcionalidades de dnd, idealmente muévelos a su propio hook (xq se necesitará reutilizar para los demás EditingWhatever)
   const [drag, setDrag] = useState({ active: false, x: "", y: "" });
 
-  const [dims, setDims] = useState({ w: 200, h: 200 });
+  // const [dims, setDims] = useState({ w: 200, h: 200 });
 
-  const boxStyle = { width: `${dims.w}px`, height: `${dims.h}px` };
+  const boxStyle = { width: `${w}px`, height: `${h}px` };
 
   const resizeFrame = (e: MouseEvent) => {
     console.log("resizeFrame", item.id);
@@ -50,11 +53,11 @@ export const EditingText: FC<Props> = ({
     if (active) {
       const xDiff = Math.abs(+x - e.clientX);
       const yDiff = Math.abs(+y - e.clientY);
-      const newW = +x > e.clientX ? dims.w - xDiff : dims.w + xDiff;
-      const newH = +y > e.clientY ? dims.h - yDiff : dims.h + yDiff;
+      const newW = +x > e.clientX ? w - xDiff : w + xDiff;
+      const newH = +y > e.clientY ? h - yDiff : h + yDiff;
 
       setDrag({ ...drag, x: `${e.clientX}`, y: `${e.clientY}` });
-      setDims({ w: newW, h: newH });
+      resize(newH, newW);
     }
   };
 
@@ -86,7 +89,7 @@ export const EditingText: FC<Props> = ({
         parent.removeEventListener("mouseleave", stopResize);
       };
     }
-  }, [selected, drag, dims]);
+  }, [selected, drag, h, w]);
 
   const containerOnClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();

@@ -10,6 +10,7 @@ import {
   editingTextDefaults,
   editTextInElementsDict,
   moveElementInElementsDict,
+  resizeElementInElementsDict,
 } from "@/utils/fixedElement";
 
 type Layouts = "fixed" | "responsive";
@@ -69,6 +70,10 @@ export const App = () => {
     setElements(moveElementInElementsDict(id, x, y));
   };
 
+  const resizeElement = (id: string) => (h: number, w: number) => {
+    setElements(resizeElementInElementsDict(id, h, w));
+  };
+
   const editText = (id: string) => (text: string[]) => {
     setElements(editTextInElementsDict(id, text));
   };
@@ -120,6 +125,7 @@ export const App = () => {
                             key={element.id}
                             {...element}
                             editText={editText(elementId)}
+                            resize={resizeElement(elementId)}
                             selected={selectedElementId === element.id}
                             selectElement={() => setSelectedElementId(element.id)}
                           />
