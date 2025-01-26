@@ -1,24 +1,19 @@
 import {
   type FC,
-  // type FocusEvent,
   type MouseEventHandler,
-  // useCallback,
 } from "react";
 import { useDrag } from "react-dnd";
-// import sanitizeHtml from 'sanitize-html';
 import type { IFixedElementEditingImg } from "@/types";
 import { dndTypes } from "@/constants/dnd";
 import { useMousePos } from "@/hooks/useMousePos";
 
 type Props = {
-  // editText: (text: string[]) => void;
   resize: (h: number, w: number) => void;
   selected: boolean;
   selectElement: () => void;
 } & IFixedElementEditingImg;
 
 export const EditingImg: FC<Props> = ({
-  // editText,
   resize,
   selected,
   selectElement,
@@ -70,13 +65,10 @@ export const EditingImg: FC<Props> = ({
     >
       <img
         src={url}
-        // onBlur={onContentBlur}
-        // contentEditable
-        // dangerouslySetInnerHTML={{ __html: `${html}` }}
         style={{
           cursor: "pointer",
           height: h,
-          width: w,
+          width: w, // TODO: how to deal with aspect ratio?
           minWidth: "fit-content",
           minHeight: "fit-content",
           outline: "none"

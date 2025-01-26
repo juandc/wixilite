@@ -50,7 +50,7 @@ const initialElements: DeviceElementsDict = {
       data: {
         ...editingImgDefaults,
         x: 50,
-        y: 300,
+        y: 250,
       },
     },
   },

@@ -20,7 +20,7 @@ export const editingImgDefaults: IFixedElementEditingImgData = {
   url: "https://media.trustradius.com/product-logos/co/Co/QJG9V44K8MIF.PNG",
   x: 0,
   y: 0,
-  h: 38,
+  h: 140,
   w: 140,
 };
 
