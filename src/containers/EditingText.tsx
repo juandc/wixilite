@@ -33,19 +33,7 @@ export const EditingText: FC<Props> = ({
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      // TODO: select item on drag
-      // didDrop: (item, monitor) => {
-      //   if (monitor.didDrop()) {
-      //     selectElement();
-      //   }
-      //   return true;
-      // },
-      // isDragging: (monitor) => {
-      //   if (!selected) {
-      //     selectElement();
-      //   }
-      //   return monitor.getItem().id === item.id;
-      // },
+      // TODO: select item on drag with didDrop? or isDragging?
     }),
     [item],
   );
@@ -57,7 +45,7 @@ export const EditingText: FC<Props> = ({
   const boxStyle = { width: `${dims.w}px`, height: `${dims.h}px` };
 
   const resizeFrame = (e: MouseEvent) => {
-    console.log("resizeFrame");
+    console.log("resizeFrame", item.id);
     const { active, x, y } = drag;
     if (active) {
       const xDiff = Math.abs(+x - e.clientX);
@@ -87,16 +75,18 @@ export const EditingText: FC<Props> = ({
   };
 
   useEffect(() => {
-    const parent = document.getElementById("fixed-mobile-board") as HTMLDivElement;
-    parent.addEventListener("mousemove", resizeFrame);
-    parent.addEventListener("mouseup", stopResize);
-    parent.addEventListener("mouseleave", stopResize);
-    return () => {
-      parent.removeEventListener("mousemove", resizeFrame);
-      parent.removeEventListener("mouseup", stopResize);
-      parent.removeEventListener("mouseleave", stopResize);
-    };
-  }, [drag, dims]);
+    if (selected && drag.active) {
+      const parent = document.getElementById("fixed-mobile-board") as HTMLDivElement;
+      parent.addEventListener("mousemove", resizeFrame);
+      parent.addEventListener("mouseup", stopResize);
+      parent.addEventListener("mouseleave", stopResize);
+      return () => {
+        parent.removeEventListener("mousemove", resizeFrame);
+        parent.removeEventListener("mouseup", stopResize);
+        parent.removeEventListener("mouseleave", stopResize);
+      };
+    }
+  }, [selected, drag, dims]);
 
   const containerOnClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
@@ -156,6 +146,7 @@ export const EditingText: FC<Props> = ({
       <button
         className="dragger"
         onMouseDown={startResize}
+        onMouseUp={stopResize}
         style={{
           backgroundColor: "rgba(255,255,255,.5)",
           borderRadius: 0,
