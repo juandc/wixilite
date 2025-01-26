@@ -17,8 +17,16 @@ export const editingTextDefaults: IFixedElementEditingTextData = {
   opacity: 1,
 };
 
+export const defaultImages = [
+  "https://media.trustradius.com/product-logos/co/Co/QJG9V44K8MIF.PNG",
+  "https://ik.imagekit.io/debounce/wp-content/uploads/2019/06/mailerlite-square.png",
+  "https://pbs.twimg.com/profile_images/1528762374597005313/eIxvv2Sx_400x400.jpg",
+  "https://www.minimaldashboard.com/images/integration/mailerlite.png",
+  // "https://textiful.com/theme/dist/assets/img/logos/mailerlite-logo-white.png",
+];
+
 export const editingImgDefaults: IFixedElementEditingImgData = {
-  url: "https://media.trustradius.com/product-logos/co/Co/QJG9V44K8MIF.PNG",
+  url: defaultImages[Math.floor(Math.random() * defaultImages.length)],
   x: 0,
   y: 0,
   h: 140,

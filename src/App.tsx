@@ -13,6 +13,7 @@ import { EditingText } from "@/containers/EditingText";
 import { EditingImg } from "./containers/EditingImg";
 import { DeviceTabs, EditorLayout } from "@/components";
 import {
+  defaultImages,
   editingImgDefaults,
   editingTextDefaults,
   addElementToElementsDict,
@@ -183,6 +184,12 @@ export const App = () => {
 
           {isImgSelected && (
             <>
+              {defaultImages.map((img) => (
+                <button onClick={() => editSelectedElementImgUrl(img)}>
+                  <img src={img} width={50} height={50} />
+                </button>
+              ))}
+
               <input
                 value={selectedElement.data.url}
                 onChange={(e) => editSelectedElementImgUrl(e.target.value)}
