@@ -13,10 +13,14 @@ import { dndTypes } from "@/constants/dnd";
 
 type Props = {
   editText: (text: string[]) => void;
+  selected: boolean;
+  selectElement: () => void;
 } & IFixedElementEditingText;
 
 export const EditingText: FC<Props> = ({
   editText,
+  selected,
+  selectElement,
   ...props
 }) => {
   const { data: { x, y, text } } = props;
@@ -68,11 +72,6 @@ export const EditingText: FC<Props> = ({
   };
 
   useEffect(() => {
-    // if (drag.active) {
-    //   document.body.style.cursor = "se-resize";
-    // } else {
-    //   document.body.style.cursor = "auto";
-    // }
     const parent = document.getElementById("fixed-mobile-board") as HTMLDivElement;
     parent.addEventListener("mousemove", resizeFrame);
     parent.addEventListener("mouseup", stopResize);
@@ -83,6 +82,12 @@ export const EditingText: FC<Props> = ({
       parent.removeEventListener("mouseleave", stopResize);
     };
   }, [drag, dims]);
+
+  const containerOnClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    selectElement();
+  };
 
   const onContentBlur = useCallback(
     (evt: FocusEvent) => {
@@ -109,29 +114,36 @@ export const EditingText: FC<Props> = ({
       style={{
         opacity: isDragging ? 0.5 : 1,
         position: "absolute",
-        padding: ".5rem",
-        border: "1px solid rgba(255,255,255,.1)",
+        // padding: selected ? "2.5px" : "0",
+        padding: "2px",
+        border: "2px solid transparent",
+        borderColor: selected ? "white" : "transparent",
         cursor: "move",
         top: y,
         left: x,
         width: "fit-content",
         height: "fit-content",
+        zIndex: selected ? 2 : 1,
       }}
-      // onMouseMove={resizeFrame} // TODO: this event should be in mobile frame, not text container
-      // onMouseUp={stopResize}
-      // onMouseLeave={stopResize}
+      onClick={containerOnClick}
     >
       <div
         onBlur={onContentBlur}
         contentEditable
         dangerouslySetInnerHTML={{ __html: `${html}` }}
-        style={{ cursor: "text", ...boxStyle, minWidth: "fit-content", minHeight: "fit-content" }}
+        style={{
+          cursor: "text",
+          ...boxStyle,
+          minWidth: "fit-content",
+          minHeight: "fit-content",
+          outline: "none"
+        }}
       />
       <button
         className="dragger"
         onMouseDown={startResize}
         style={{
-          backgroundColor: "rgba(255,255,255,.1)",
+          backgroundColor: "rgba(255,255,255,.5)",
           borderRadius: 0,
           height: "1rem",
           width: "1rem",
@@ -140,6 +152,7 @@ export const EditingText: FC<Props> = ({
           bottom: 0,
           right: 0,
           cursor: "se-resize",
+          display: selected ? "block" : "none",
         }}
       >
       </button>

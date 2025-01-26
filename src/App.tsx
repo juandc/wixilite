@@ -37,6 +37,7 @@ export const App = () => {
   const setMobileTab = () => setTab("mobile");
   const setDesktopTab = () => setTab("desktop");
 
+  const [selectedElementId, setSelectedElementId] = useState<string | undefined>(undefined);
   const [elements, setElements] = useState<IFixedElementsDict>(() => initialElements);
   const elementIds = Object.keys(elements);
 
@@ -72,6 +73,9 @@ export const App = () => {
     }));
   };
 
+  // const selectElement = (id: string) => setSelectedElementId(id);
+  // const resetSelection = () => setSelectedElementId(undefined);
+
   return (
     <EditorLayout
       showMobileConfigBar={showConfigBar}
@@ -86,7 +90,7 @@ export const App = () => {
         </>
       )}
       board={(
-        <>
+        <div onClick={() => setSelectedElementId(undefined)}>
           {!layout && (
             <div>
               <button onClick={() => setLayout("fixed")}>Fixed</button>
@@ -116,6 +120,8 @@ export const App = () => {
                             key={element.id}
                             {...element}
                             editText={editText(elementId)}
+                            selected={selectedElementId === element.id}
+                            selectElement={() => setSelectedElementId(element.id)}
                           />
                         );
                       }
@@ -131,7 +137,7 @@ export const App = () => {
               )}
             </div>
           )}
-        </>
+        </div>
       )}
     />
   );
