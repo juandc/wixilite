@@ -5,12 +5,14 @@ import { dndTypes } from "@/constants/dnd";
 import { useForkRef } from "@/hooks/useForkedRef";
 
 type Props = PropsWithChildren<{
+  isItemSelected: boolean;
   addElement: (x: number, y: number) => void;
   moveElement: (id: string) => (x: number, y: number) => void;
 }>;
 
 export const FixedMobileBoard: FC<Props> = ({
   children,
+  isItemSelected,
   addElement,
   moveElement,
 }) => {
@@ -62,6 +64,7 @@ export const FixedMobileBoard: FC<Props> = ({
         minHeight: "400px",
         margin: "0 auto",
         position: "relative",
+        overflow: isItemSelected ? "unset" : "hidden",
       }}
     >
       {children}

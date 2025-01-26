@@ -116,6 +116,7 @@ export const App = () => {
                   <FixedMobileBoard
                     addElement={addElement}
                     moveElement={moveElement}
+                    isItemSelected={!!selectedElementId?.length}
                   >
                     {elementIds.map((elementId) => {
                       const element = { ...elements[elementId] };
