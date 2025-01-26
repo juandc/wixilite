@@ -1,15 +1,14 @@
 import {
   type FC,
   type FocusEvent,
-  MouseEventHandler,
+  type MouseEventHandler,
   useCallback,
-  useEffect,
-  useState,
 } from "react";
 import { useDrag } from "react-dnd";
 import sanitizeHtml from 'sanitize-html';
 import type { IFixedElementEditingText } from "@/types";
 import { dndTypes } from "@/constants/dnd";
+import { useMousePos } from "@/hooks/useMousePos";
 
 type Props = {
   editText: (text: string[]) => void;
@@ -35,61 +34,15 @@ export const EditingText: FC<Props> = ({
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      // TODO: select item on drag with didDrop? or isDragging?
+      // TODO: select item on drag with (didDrop? isDragging?)
     }),
     [item],
   );
 
-  // Oli Juan de más tarde, cambia el nombre de estos estados, que no se confinda con el resto de funcionalidades de dnd, idealmente muévelos a su propio hook (xq se necesitará reutilizar para los demás EditingWhatever)
-  const [drag, setDrag] = useState({ active: false, x: "", y: "" });
-
-  // const [dims, setDims] = useState({ w: 200, h: 200 });
-
-  const boxStyle = { width: `${w}px`, height: `${h}px` };
-
-  const resizeFrame = (e: MouseEvent) => {
-    console.log("resizeFrame", item.id);
-    const { active, x, y } = drag;
-    if (active) {
-      const xDiff = Math.abs(+x - e.clientX);
-      const yDiff = Math.abs(+y - e.clientY);
-      const newW = +x > e.clientX ? w - xDiff : w + xDiff;
-      const newH = +y > e.clientY ? h - yDiff : h + yDiff;
-
-      setDrag({ ...drag, x: `${e.clientX}`, y: `${e.clientY}` });
-      resize(newH, newW);
-    }
-  };
-
-  const stopResize = () => {
-    console.log("stopResize");
-    setDrag({ ...drag, active: false });
-  };
-
-  const startResize: MouseEventHandler<HTMLButtonElement> = (e) => {
-    console.log("startResize");
-    e.preventDefault();
-    e.stopPropagation();
-    setDrag({
-      active: true,
-      x: `${e.clientX}`,
-      y: `${e.clientY}`,
-    });
-  };
-
-  useEffect(() => {
-    if (selected && drag.active) {
-      const parent = document.getElementById("fixed-mobile-board") as HTMLDivElement;
-      parent.addEventListener("mousemove", resizeFrame);
-      parent.addEventListener("mouseup", stopResize);
-      parent.addEventListener("mouseleave", stopResize);
-      return () => {
-        parent.removeEventListener("mousemove", resizeFrame);
-        parent.removeEventListener("mouseup", stopResize);
-        parent.removeEventListener("mouseleave", stopResize);
-      };
-    }
-  }, [selected, drag, h, w]);
+  const {
+    startResize,
+    stopResize,
+  } = useMousePos({ selected, h, w, resize });
 
   const containerOnClick: MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault();
@@ -140,7 +93,8 @@ export const EditingText: FC<Props> = ({
         dangerouslySetInnerHTML={{ __html: `${html}` }}
         style={{
           cursor: "text",
-          ...boxStyle,
+          height: h,
+          width: w,
           minWidth: "fit-content",
           minHeight: "fit-content",
           outline: "none"
