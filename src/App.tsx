@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import type {
+  CommonElementData,
   IDevices,
   IFixedElementNew,
   IFixedElementsDict,
@@ -57,6 +58,8 @@ const initialElements: DeviceElementsDict = {
   desktop: {},
 };
 
+const commonElementDataKeys: Array<keyof CommonElementData> = ["h", "w", "x", "y", "opacity"];
+
 export const App = () => {
   const [showConfigBar, setShowConfigBar] = useState<boolean>(false);
   const [layout, setLayout] = useState<Layouts | undefined>(undefined);
@@ -77,6 +80,10 @@ export const App = () => {
     }));
   };
 
+  const selectedElement = selectedElementId && elements[selectedElementId];
+  const isTextSelected = selectedElement && selectedElement.type === "fixed--editing-text";
+  const isImgSelected = selectedElement && selectedElement.type === "fixed--editing-img";
+
   const addElement = (type: IFixedElementNew["type"]) => (x: number, y: number) => {
     const id = `${Math.random()}`;
     setElements(addElementToElementsDict(type)(id, x, y));
@@ -90,9 +97,50 @@ export const App = () => {
     setElements(resizeElementInElementsDict(id, h, w));
   };
 
+  const editCommonElementData = (id: string) => (data: Partial<CommonElementData>) => {
+    const element = { ...elements[id] };
+    element.data = { ...element.data, ...data };
+    setElements((prev) => ({ ...prev, [id]: element }));
+  };
+
+  const editSelectedElementCommonData = (data: Partial<CommonElementData>) => {
+    if (selectedElementId) {
+      editCommonElementData(selectedElementId)(data);
+    }
+  };
+
   const editText = (id: string) => (text: string[]) => {
     setElements(editTextInElementsDict(id, text));
   };
+
+  const editSelectedElementText = (text: string) => {
+    if (isTextSelected) {
+      editText(selectedElementId)(text.split("\n"));
+    }
+  };
+
+  const editImgUrl = (id: string) => (url: string) => {
+    if (elements[id].type === "fixed--editing-img") {
+      const element = { ...elements[id] };
+      element.data.url = url;
+      setElements((prev) => ({ ...prev, [id]: element }));
+    }
+  };
+
+  const editSelectedElementImgUrl = (url: string) => {
+    if (isImgSelected) {
+      editImgUrl(selectedElementId)(url);
+    }
+  };
+
+  let selectedCommonData: Array<[string, number]> = []; // TODO: only numbers?
+
+  if (selectedElement) {
+    selectedCommonData = Object.entries(selectedElement.data)
+      .filter(
+        ([key]) => commonElementDataKeys.includes(key as keyof CommonElementData)
+      );
+  }
 
   return (
     <EditorLayout
@@ -106,6 +154,41 @@ export const App = () => {
           <button>Copy JSON</button>
           <AddText />
           <AddImg />
+
+          {selectedCommonData?.map(prop => (
+            <input
+              key={prop[0]}
+              type="number"
+              placeholder={prop[0]}
+              value={prop[1]}
+              onChange={(e) => {
+                editSelectedElementCommonData({
+                  [prop[0]]: Number(e.target.value)
+                });
+              }}
+              min={0}
+              max={prop[0] === "opacity" ? 1 : undefined}
+              step={prop[0] === "opacity" ? 0.1 : 1}
+            />
+          ))}
+
+          {isTextSelected && (
+            <>
+              <textarea
+                value={selectedElement.data.text.join("\n")}
+                onChange={(e) => editSelectedElementText(e.target.value)}
+              />
+            </>
+          )}
+
+          {isImgSelected && (
+            <>
+              <input
+                value={selectedElement.data.url}
+                onChange={(e) => editSelectedElementImgUrl(e.target.value)}
+              />
+            </>
+          )}
         </>
       )}
       board={(

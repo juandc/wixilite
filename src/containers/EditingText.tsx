@@ -25,7 +25,7 @@ export const EditingText: FC<Props> = ({
   ...item
 }) => {
   const {
-    data: { text, x, y, h, w },
+    data: { text, x, y, h, w, opacity },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -73,7 +73,7 @@ export const EditingText: FC<Props> = ({
     <div
       ref={dragRef}
       style={{
-        opacity: isDragging ? 0.5 : 1,
+        opacity: isDragging ? 0.5 : opacity,
         position: "absolute",
         padding: "2px",
         border: "2px solid transparent",

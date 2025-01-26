@@ -14,6 +14,7 @@ export const editingTextDefaults: IFixedElementEditingTextData = {
   y: 0,
   h: 38,
   w: 140,
+  opacity: 1,
 };
 
 export const editingImgDefaults: IFixedElementEditingImgData = {
@@ -22,6 +23,7 @@ export const editingImgDefaults: IFixedElementEditingImgData = {
   y: 0,
   h: 140,
   w: 140,
+  opacity: 1,
 };
 
 

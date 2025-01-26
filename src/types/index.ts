@@ -1,6 +1,7 @@
 export type { IDevices } from "./IDevices";
 
 export type {
+  CommonElementData,
   IFixedElementEditingTextData,
   IFixedElementEditingText,
   IFixedElementNewText,

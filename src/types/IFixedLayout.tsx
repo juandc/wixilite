@@ -1,9 +1,9 @@
-type CommonElementData = {
+export type CommonElementData = {
   x: number;
   y: number;
   h: number;
   w: number;
-  // opacity: number;
+  opacity: number;
   // ...
 };
 
