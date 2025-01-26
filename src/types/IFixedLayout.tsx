@@ -1,11 +1,17 @@
+export type IFixedElementEditingTextData = {
+  text: string[];
+  x: number;
+  y: number;
+  h: number;
+  w: number;
+  // opacity: number;
+  // ...
+};
+
 export type IFixedElementEditingText = {
   id: string;
   type: "fixed--editing-text";
-  data: {
-    x: number;
-    y: number;
-    text: string[];
-  };
+  data: IFixedElementEditingTextData;
 };
 
 export type IFixedElementNewText = {

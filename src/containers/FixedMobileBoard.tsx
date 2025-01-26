@@ -28,7 +28,10 @@ export const FixedMobileBoard: FC<Props> = ({
           };
           moveElement(item.id)(newPos.x, newPos.y);
         } else if (item.type === "fixed--new-text") {
-          const boundingRect = boundingRef.current?.getBoundingClientRect() ?? { x: 0, y: 0 };
+          const boundingRect = boundingRef.current?.getBoundingClientRect() ?? {
+            x: 0,
+            y: 0
+          };
           const end = monitor.getClientOffset() as XYCoord;
           const newPos = {
             x: end.x - boundingRect.x,

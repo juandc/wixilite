@@ -21,18 +21,33 @@ export const EditingText: FC<Props> = ({
   editText,
   selected,
   selectElement,
-  ...props
+  ...item
 }) => {
-  const { data: { x, y, text } } = props;
+  const {
+    data: { text, x, y },
+  } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
       type: dndTypes.EDITING_TEXT,
-      item: { ...props },
+      item: { ...item },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
+      // TODO: select item on drag
+      // didDrop: (item, monitor) => {
+      //   if (monitor.didDrop()) {
+      //     selectElement();
+      //   }
+      //   return true;
+      // },
+      // isDragging: (monitor) => {
+      //   if (!selected) {
+      //     selectElement();
+      //   }
+      //   return monitor.getItem().id === item.id;
+      // },
     }),
-    [props],
+    [item],
   );
 
   const [drag, setDrag] = useState({ active: false, x: "", y: "" });
@@ -114,10 +129,9 @@ export const EditingText: FC<Props> = ({
       style={{
         opacity: isDragging ? 0.5 : 1,
         position: "absolute",
-        // padding: selected ? "2.5px" : "0",
         padding: "2px",
         border: "2px solid transparent",
-        borderColor: selected ? "white" : "transparent",
+        borderColor: selected ? "white" : "transparent", // TODO: also on hover
         cursor: "move",
         top: y,
         left: x,

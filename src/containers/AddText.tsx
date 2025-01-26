@@ -10,17 +10,6 @@ export const AddText: FC = () => {
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      isDragging() {
-        // close configbar
-        console.log("Dragging add text");
-        return true;
-      },
-      end: (_, monitor) => {
-        const didDrop = monitor.didDrop()
-        if (!didDrop) {
-          // open configbar
-        }
-      },
     }),
     [],
   );

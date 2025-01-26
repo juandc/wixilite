@@ -5,28 +5,39 @@ import { FixedMobileBoard } from "@/containers/FixedMobileBoard";
 import { AddText } from "@/containers/AddText";
 import { EditingText } from "@/containers/EditingText";
 import { DeviceTabs, EditorLayout } from "@/components";
+import {
+  addTextElementToElementsDict,
+  editingTextDefaults,
+  editTextInElementsDict,
+  moveElementInElementsDict,
+} from "@/utils/fixedElement";
 
 type Layouts = "fixed" | "responsive";
 
-const initialElements: IFixedElementsDict = {
-  "1": {
-    id: "1",
-    type: "fixed--editing-text",
-    data: {
-      x: 10,
-      y: 10,
-      text: ["Hello World"],
+type DeviceElementsDict = Record<IDevices, IFixedElementsDict>;
+
+const initialElements: DeviceElementsDict = {
+  mobile: {
+    "1": {
+      id: "1",
+      type: "fixed--editing-text",
+      data: {
+        ...editingTextDefaults,
+        text: ["Hello World"],
+      },
+    },
+    "2": {
+      id: "2",
+      type: "fixed--editing-text",
+      data: {
+        ...editingTextDefaults,
+        text: ["Hello World 2"],
+        x: 100,
+        y: 100,
+      },
     },
   },
-  "2": {
-    id: "2",
-    type: "fixed--editing-text",
-    data: {
-      x: 50,
-      y: 50,
-      text: ["Hello World 2"],
-    },
-  },
+  desktop: {},
 };
 
 export const App = () => {
@@ -38,39 +49,28 @@ export const App = () => {
   const setDesktopTab = () => setTab("desktop");
 
   const [selectedElementId, setSelectedElementId] = useState<string | undefined>(undefined);
-  const [elements, setElements] = useState<IFixedElementsDict>(() => initialElements);
+
+  const [deviceElements, setDeviceElements] = useState<DeviceElementsDict>(() => initialElements);
+  const elements = deviceElements[tab];
   const elementIds = Object.keys(elements);
+  const setElements = (fn: (prev: IFixedElementsDict) => IFixedElementsDict) => {
+    return setDeviceElements(prev => ({
+      ...prev,
+      [tab]: fn(prev[tab]),
+    }));
+  };
 
   const addElement = (x: number, y: number) => {
     const id = `${Math.random()}`;
-    setElements(prev => ({
-      ...prev,
-      [id]: {
-        id,
-        type: "fixed--editing-text",
-        data: { x, y, text: ["New Text"], },
-      },
-    }));
+    setElements(addTextElementToElementsDict(id, x, y));
   };
 
   const moveElement = (id: string) => (x: number, y: number) => {
-    setElements(prev => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        data: { ...prev[id].data, x, y },
-      },
-    }));
+    setElements(moveElementInElementsDict(id, x, y));
   };
 
   const editText = (id: string) => (text: string[]) => {
-    setElements(prev => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        data: { ...prev[id].data, text },
-      },
-    }));
+    setElements(editTextInElementsDict(id, text));
   };
 
   // const selectElement = (id: string) => setSelectedElementId(id);
