@@ -1,12 +1,12 @@
 import { useRef, type FC, type PropsWithChildren } from "react";
 import { useDrop, type XYCoord } from "react-dnd";
-import type { IDraggableFixedElement } from "@/types";
+import type { IDraggableFixedElement, IFixedElementNew } from "@/types";
 import { dndTypes } from "@/constants/dnd";
 import { useForkRef } from "@/hooks/useForkedRef";
 
 type Props = PropsWithChildren<{
   isItemSelected: boolean;
-  addElement: (x: number, y: number) => void;
+  addElement: (type: IFixedElementNew["type"]) => (x: number, y: number) => void;
   moveElement: (id: string) => (x: number, y: number) => void;
 }>;
 
@@ -20,16 +20,28 @@ export const FixedMobileBoard: FC<Props> = ({
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
-      accept: [dndTypes.ADD_TEXT, dndTypes.EDITING_TEXT],
+      accept: [
+        dndTypes.ADD_TEXT,
+        dndTypes.EDITING_TEXT,
+        dndTypes.ADD_IMAGE,
+        dndTypes.EDITING_IMAGE,
+      ],
       drop(item: IDraggableFixedElement, monitor) {
-        if (item.type === "fixed--editing-text") {
+        console.log("drop", item);
+        if (
+          item.type === "fixed--editing-text"
+          || item.type === "fixed--editing-img"
+        ) {
           const delta = monitor.getDifferenceFromInitialOffset() as XYCoord;
           const newPos = {
             x: item.data.x + delta.x,
             y: item.data.y + delta.y,
           };
           moveElement(item.id)(newPos.x, newPos.y);
-        } else if (item.type === "fixed--new-text") {
+        } else if (
+          item.type === "fixed--new-text"
+          || item.type === "fixed--new-img"
+        ) {
           const boundingRect = boundingRef.current?.getBoundingClientRect() ?? {
             x: 0,
             y: 0
@@ -39,7 +51,7 @@ export const FixedMobileBoard: FC<Props> = ({
             x: end.x - boundingRect.x,
             y: end.y - boundingRect.y,
           };
-          addElement(newPos.x, newPos.y);
+          addElement(item.type)(newPos.x, newPos.y);
         }
       },
       collect: (monitor) => ({

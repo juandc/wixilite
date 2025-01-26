@@ -1,35 +1,35 @@
 import {
   type FC,
-  type FocusEvent,
+  // type FocusEvent,
   type MouseEventHandler,
-  useCallback,
+  // useCallback,
 } from "react";
 import { useDrag } from "react-dnd";
-import sanitizeHtml from 'sanitize-html';
-import type { IFixedElementEditingText } from "@/types";
+// import sanitizeHtml from 'sanitize-html';
+import type { IFixedElementEditingImg } from "@/types";
 import { dndTypes } from "@/constants/dnd";
 import { useMousePos } from "@/hooks/useMousePos";
 
 type Props = {
-  editText: (text: string[]) => void;
+  // editText: (text: string[]) => void;
   resize: (h: number, w: number) => void;
   selected: boolean;
   selectElement: () => void;
-} & IFixedElementEditingText;
+} & IFixedElementEditingImg;
 
-export const EditingText: FC<Props> = ({
-  editText,
+export const EditingImg: FC<Props> = ({
+  // editText,
   resize,
   selected,
   selectElement,
   ...item
 }) => {
   const {
-    data: { text, x, y, h, w },
+    data: { url, x, y, h, w },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
-      type: dndTypes.EDITING_TEXT,
+      type: dndTypes.EDITING_IMAGE,
       item: { ...item },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
@@ -50,25 +50,6 @@ export const EditingText: FC<Props> = ({
     selectElement();
   };
 
-  const onContentBlur = useCallback(
-    (evt: FocusEvent) => {
-      const sanitizeOpts = { allowedTags: [], allowedAttributes: {} };
-      const sanitize = (v: string) => sanitizeHtml(v, sanitizeOpts);
-      const newHtml = evt.currentTarget.innerHTML;
-      const newValue = `${newHtml}`
-        .replaceAll('</p><p>', '<br>')
-        .replaceAll('<p>', '')
-        .replaceAll('</p>', '')
-        .split('<br>')
-        .map(sanitize)
-        .filter((v) => v.length);
-      editText(newValue);
-    },
-    []
-  );
-
-  const html = text.map(v => `<p>${v}</p>`).join("");
-
   return (
     <div
       ref={dragRef}
@@ -83,16 +64,17 @@ export const EditingText: FC<Props> = ({
         left: x,
         width: "fit-content",
         height: "fit-content",
-        zIndex: selected ? 5 : 4,
+        zIndex: selected ? 5 : 3,
       }}
       onClick={containerOnClick}
     >
-      <div
-        onBlur={onContentBlur}
-        contentEditable
-        dangerouslySetInnerHTML={{ __html: `${html}` }}
+      <img
+        src={url}
+        // onBlur={onContentBlur}
+        // contentEditable
+        // dangerouslySetInnerHTML={{ __html: `${html}` }}
         style={{
-          cursor: "text",
+          cursor: "pointer",
           height: h,
           width: w,
           minWidth: "fit-content",

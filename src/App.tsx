@@ -1,13 +1,20 @@
 
 import { useState } from "react";
-import type { IDevices, IFixedElementsDict } from "./types";
+import type {
+  IDevices,
+  IFixedElementNew,
+  IFixedElementsDict,
+} from "./types";
 import { FixedMobileBoard } from "@/containers/FixedMobileBoard";
 import { AddText } from "@/containers/AddText";
+import { AddImg } from "@/containers/AddImg";
 import { EditingText } from "@/containers/EditingText";
+import { EditingImg } from "./containers/EditingImg";
 import { DeviceTabs, EditorLayout } from "@/components";
 import {
-  addTextElementToElementsDict,
+  editingImgDefaults,
   editingTextDefaults,
+  addElementToElementsDict,
   editTextInElementsDict,
   moveElementInElementsDict,
   resizeElementInElementsDict,
@@ -37,6 +44,15 @@ const initialElements: DeviceElementsDict = {
         y: 100,
       },
     },
+    "3": {
+      id: "3",
+      type: "fixed--editing-img",
+      data: {
+        ...editingImgDefaults,
+        x: 50,
+        y: 300,
+      },
+    },
   },
   desktop: {},
 };
@@ -61,9 +77,9 @@ export const App = () => {
     }));
   };
 
-  const addElement = (x: number, y: number) => {
+  const addElement = (type: IFixedElementNew["type"]) => (x: number, y: number) => {
     const id = `${Math.random()}`;
-    setElements(addTextElementToElementsDict(id, x, y));
+    setElements(addElementToElementsDict(type)(id, x, y));
   };
 
   const moveElement = (id: string) => (x: number, y: number) => {
@@ -78,9 +94,6 @@ export const App = () => {
     setElements(editTextInElementsDict(id, text));
   };
 
-  // const selectElement = (id: string) => setSelectedElementId(id);
-  // const resetSelection = () => setSelectedElementId(undefined);
-
   return (
     <EditorLayout
       showMobileConfigBar={showConfigBar}
@@ -92,6 +105,7 @@ export const App = () => {
           <input type="text" placeholder="Board name" />
           <button>Copy JSON</button>
           <AddText />
+          <AddImg />
         </>
       )}
       board={(
@@ -126,6 +140,17 @@ export const App = () => {
                             key={element.id}
                             {...element}
                             editText={editText(elementId)}
+                            resize={resizeElement(elementId)}
+                            selected={selectedElementId === element.id}
+                            selectElement={() => setSelectedElementId(element.id)}
+                          />
+                        );
+                      }
+                      if (element.type === "fixed--editing-img") {
+                        return (
+                          <EditingImg
+                            key={element.id}
+                            {...element}
                             resize={resizeElement(elementId)}
                             selected={selectedElementId === element.id}
                             selectElement={() => setSelectedElementId(element.id)}

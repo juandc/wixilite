@@ -1,5 +1,4 @@
-export type IFixedElementEditingTextData = {
-  text: string[];
+type CommonElementData = {
   x: number;
   y: number;
   h: number;
@@ -7,6 +6,11 @@ export type IFixedElementEditingTextData = {
   // opacity: number;
   // ...
 };
+
+
+export type IFixedElementEditingTextData = {
+  text: string[];
+} & CommonElementData;
 
 export type IFixedElementEditingText = {
   id: string;
@@ -18,7 +22,24 @@ export type IFixedElementNewText = {
   type: "fixed--new-text";
 };
 
-export type IFixedElement = IFixedElementEditingText;
-export type IDraggableFixedElement = IFixedElementEditingText | IFixedElementNewText;
+
+export type IFixedElementEditingImgData = {
+  url: string;
+} & CommonElementData;
+
+export type IFixedElementEditingImg = {
+  id: string;
+  type: "fixed--editing-img";
+  data: IFixedElementEditingImgData;
+};
+
+export type IFixedElementNewImg = {
+  type: "fixed--new-img";
+};
+
+
+export type IFixedElement = IFixedElementEditingText | IFixedElementEditingImg;
+export type IFixedElementNew = IFixedElementNewText | IFixedElementNewImg;
+export type IDraggableFixedElement = IFixedElement | IFixedElementNew;
 
 export type IFixedElementsDict = Record<string, IFixedElement>;
