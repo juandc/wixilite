@@ -10,7 +10,12 @@ export type CommonElementData = {
 
 export type IFixedElementEditingTextData = {
   text: string[];
+  color: string;
 } & CommonElementData;
+
+export type IFixedElementEditingTextProps = Partial<
+  Omit<IFixedElementEditingTextData, keyof CommonElementData>
+>;
 
 export type IFixedElementEditingText = {
   id: string;
@@ -25,7 +30,12 @@ export type IFixedElementNewText = {
 
 export type IFixedElementEditingImgData = {
   url: string;
+  borderRadius: number;
 } & CommonElementData;
+
+export type IFixedElementEditingImgProps = Partial<
+  Omit<IFixedElementEditingImgData, keyof CommonElementData>
+>;
 
 export type IFixedElementEditingImg = {
   id: string;

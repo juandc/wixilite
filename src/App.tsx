@@ -3,6 +3,8 @@ import { useState } from "react";
 import type {
   CommonElementData,
   IDevices,
+  IFixedElementEditingImgProps,
+  IFixedElementEditingTextProps,
   IFixedElementNew,
   IFixedElementsDict,
 } from "./types";
@@ -17,9 +19,10 @@ import {
   editingImgDefaults,
   editingTextDefaults,
   addElementToElementsDict,
-  editTextInElementsDict,
   moveElementInElementsDict,
   resizeElementInElementsDict,
+  editTextPropsInElementsDict,
+  editImgPropsInElementsDict,
 } from "@/utils/fixedElement";
 
 type Layouts = "fixed" | "responsive";
@@ -110,27 +113,23 @@ export const App = () => {
     }
   };
 
-  const editText = (id: string) => (text: string[]) => {
-    setElements(editTextInElementsDict(id, text));
+  const editTextProps = (id: string) => (textProps: IFixedElementEditingTextProps) => {
+    setElements(editTextPropsInElementsDict(id, textProps));
   };
 
-  const editSelectedElementText = (text: string) => {
+  const editSelectedElementTextProps = (textProps: IFixedElementEditingTextProps) => {
     if (isTextSelected) {
-      editText(selectedElementId)(text.split("\n"));
+      editTextProps(selectedElementId)(textProps);
     }
   };
 
-  const editImgUrl = (id: string) => (url: string) => {
-    if (elements[id].type === "fixed--editing-img") {
-      const element = { ...elements[id] };
-      element.data.url = url;
-      setElements((prev) => ({ ...prev, [id]: element }));
-    }
+  const editImgProps = (id: string) => (imgProps: IFixedElementEditingImgProps) => {
+    setElements(editImgPropsInElementsDict(id, imgProps));
   };
 
-  const editSelectedElementImgUrl = (url: string) => {
+  const editSelectedElementImgProps = (imgProps: IFixedElementEditingImgProps) => {
     if (isImgSelected) {
-      editImgUrl(selectedElementId)(url);
+      editImgProps(selectedElementId)(imgProps);
     }
   };
 
@@ -138,9 +137,9 @@ export const App = () => {
 
   if (selectedElement) {
     selectedCommonData = Object.entries(selectedElement.data)
-      .filter(
-        ([key]) => commonElementDataKeys.includes(key as keyof CommonElementData)
-      );
+      .filter(([key]) => {
+        return commonElementDataKeys.includes(key as keyof CommonElementData);
+      }) as Array<[string, number]>; // TODO: come on, should be a better way
   }
 
   return (
@@ -177,7 +176,12 @@ export const App = () => {
             <>
               <textarea
                 value={selectedElement.data.text.join("\n")}
-                onChange={(e) => editSelectedElementText(e.target.value)}
+                onChange={(e) => editSelectedElementTextProps({ text: e.target.value.split("\n") })}
+              />
+              <input
+                type="color"
+                value={selectedElement.data.color}
+                onChange={(e) => editSelectedElementTextProps({ color: e.target.value })}
               />
             </>
           )}
@@ -185,14 +189,20 @@ export const App = () => {
           {isImgSelected && (
             <>
               {defaultImages.map((img) => (
-                <button onClick={() => editSelectedElementImgUrl(img)}>
+                <button onClick={() => editSelectedElementImgProps({ url: img })}>
                   <img src={img} width={50} height={50} />
                 </button>
               ))}
 
               <input
                 value={selectedElement.data.url}
-                onChange={(e) => editSelectedElementImgUrl(e.target.value)}
+                onChange={(e) => editSelectedElementImgProps({ url: e.target.value })}
+              />
+
+              <input
+                type="number"
+                value={selectedElement.data.borderRadius}
+                onChange={(e) => editSelectedElementImgProps({ borderRadius: Number(e.target.value) })}
               />
             </>
           )}
@@ -229,7 +239,7 @@ export const App = () => {
                           <EditingText
                             key={element.id}
                             {...element}
-                            editText={editText(elementId)}
+                            editText={text => editTextProps(elementId)({ text })}
                             resize={resizeElement(elementId)}
                             selected={selectedElementId === element.id}
                             selectElement={() => setSelectedElementId(element.id)}

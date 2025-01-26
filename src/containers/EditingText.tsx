@@ -25,7 +25,7 @@ export const EditingText: FC<Props> = ({
   ...item
 }) => {
   const {
-    data: { text, x, y, h, w, opacity },
+    data: { text, color, x, y, h, w, opacity },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -93,6 +93,7 @@ export const EditingText: FC<Props> = ({
         dangerouslySetInnerHTML={{ __html: `${html}` }}
         style={{
           cursor: "text",
+          color,
           height: h,
           width: w,
           minWidth: "fit-content",

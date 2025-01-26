@@ -20,7 +20,7 @@ export const EditingImg: FC<Props> = ({
   ...item
 }) => {
   const {
-    data: { url, x, y, h, w, opacity },
+    data: { url, borderRadius, x, y, h, w, opacity },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -66,6 +66,7 @@ export const EditingImg: FC<Props> = ({
       <img
         src={url}
         style={{
+          borderRadius,
           cursor: "pointer",
           height: h,
           width: w, // TODO: how to deal with aspect ratio?

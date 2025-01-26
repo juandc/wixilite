@@ -2,14 +2,17 @@ import type {
   IFixedElement,
   IFixedElementEditingImg,
   IFixedElementEditingImgData,
+  IFixedElementEditingImgProps,
   IFixedElementEditingText,
   IFixedElementEditingTextData,
+  IFixedElementEditingTextProps,
   IFixedElementNew,
   IFixedElementsDict,
 } from "@/types";
 
 export const editingTextDefaults: IFixedElementEditingTextData = {
   text: ["New Text"],
+  color: "#FFFFFF",
   x: 0,
   y: 0,
   h: 38,
@@ -27,6 +30,7 @@ export const defaultImages = [
 
 export const editingImgDefaults: IFixedElementEditingImgData = {
   url: defaultImages[Math.floor(Math.random() * defaultImages.length)],
+  borderRadius: 0,
   x: 0,
   y: 0,
   h: 140,
@@ -86,13 +90,25 @@ export const resizeElementInElementsDict = (id: string, h: number, w: number) =>
 };
 
 
-export const editTextInElementsDict = (id: string, text: string[]) => {
+export const editTextPropsInElementsDict = (id: string, textProps: IFixedElementEditingTextProps) => {
   return (elements: IFixedElementsDict): IFixedElementsDict => {
     if (elements[id].type === "fixed--editing-text") {
       const element: IFixedElementEditingText = { ...elements[id] };
-      element.data.text = text;
+      element.data = { ...element.data, ...textProps };
       return { ...elements, [id]: element };
     }
     return elements;
   };
 };
+
+
+export const editImgPropsInElementsDict = (id: string, imgProps: IFixedElementEditingImgProps) => {
+  return (elements: IFixedElementsDict): IFixedElementsDict => {
+    if (elements[id].type === "fixed--editing-img") {
+      const element: IFixedElementEditingImg = { ...elements[id] };
+      element.data = { ...element.data, ...imgProps };
+      return { ...elements, [id]: element };
+    }
+    return elements;
+  };
+}
