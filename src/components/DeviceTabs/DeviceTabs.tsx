@@ -14,10 +14,12 @@ export const DeviceTabs: FC<Props> = ({ selected, setMobile, setDesktop }) => {
       <button
         className={`${selected === "mobile" ? "active" : ""}`}
         onClick={setMobile}
+        data-testid="mobile-tab"
       >Mobile</button>
       <button
         className={`${selected === "desktop" ? "active" : ""}`}
         onClick={setDesktop}
+        data-testid="desktop-tab"
       >Desktop</button>
     </div>
   );

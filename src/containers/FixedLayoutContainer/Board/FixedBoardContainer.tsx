@@ -48,7 +48,7 @@ export const FixedBoardContainer: FC = () => {
         />
 
         {device === "mobile" && (
-          <div>
+          <div data-testid="fixed-mobile-board">
             <FixedMobileBoard
               addElement={addElement}
               moveElement={moveElement}
@@ -96,7 +96,7 @@ export const FixedBoardContainer: FC = () => {
         )}
 
         {device === "desktop" && (
-          <div>
+          <div data-testid="fixed-desktop-board">
             Board desktop
           </div>
         )}

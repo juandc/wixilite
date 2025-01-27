@@ -1,3 +1,4 @@
+import path from 'path';
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -5,5 +6,10 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./src/setupTests.ts"],
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, "./src"),
+    },
   },
 });
