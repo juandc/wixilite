@@ -52,10 +52,13 @@ const initialElements: DeviceElementsDict = {
 };
 
 type ContextState = {
+  device: IDevices;
   elements: IFixedElementsDict;
   elementIds: string[];
   selectedElementId: string | undefined;
   selectedElement: IFixedElement | undefined;
+  setMobileTab: () => void;
+  setDesktopTab: () => void;
   setElements: (fn: (prev: IFixedElementsDict) => IFixedElementsDict) => void;
   setSelectedElementId: (id: string | undefined) => void;
   addElement: (type: IFixedElementNew["type"]) => (x: number, y: number) => void;
@@ -71,11 +74,11 @@ type ContextState = {
 
 export const FixedLayoutContext = createContext<ContextState | undefined>(undefined);
 
-type Props = PropsWithChildren<{
-  device: IDevices;
-}>;
+export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [device, setDevice] = useState<IDevices>("mobile");
+  const setMobileTab = () => setDevice("mobile");
+  const setDesktopTab = () => setDevice("desktop");
 
-export const FixedLayoutProvider: FC<Props> = ({ children, device }) => {
   const [deviceElements, setDeviceElements] = useState<DeviceElementsDict>(() => initialElements);
   const elements = deviceElements[device];
   const elementIds = Object.keys(elements);
@@ -138,6 +141,7 @@ export const FixedLayoutProvider: FC<Props> = ({ children, device }) => {
   };
 
   const states = {
+    device,
     elements,
     elementIds,
     selectedElementId,
@@ -147,6 +151,8 @@ export const FixedLayoutProvider: FC<Props> = ({ children, device }) => {
   };
 
   const updaters = {
+    setMobileTab,
+    setDesktopTab,
     setElements,
     setSelectedElementId,
     addElement,

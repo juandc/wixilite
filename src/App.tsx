@@ -1,43 +1,49 @@
 import { useState } from "react";
-import type { IDevices } from "@/types";
 import { FixedLayoutProvider } from "@/context/FixedLayoutContext";
-import { FixedLayoutContainer } from "@/containers/FixedLayoutContainer";
+import { FixedConfigBarContainer, FixedBoardContainer } from "@/containers/FixedLayoutContainer";
+import { EditorLayout } from "./components";
 
 type Layouts = "fixed" | "responsive";
 
 export const App = () => {
+  // const [pageInfo, setPageInfo] = useState({
+  //   name: "info",
+  //   innerBackground: "#fff",
+  //   outerBackground: "#222",
+  // });
   const [layout, setLayout] = useState<Layouts | undefined>(undefined);
 
   const [showConfigBar, setShowConfigBar] = useState<boolean>(false);
-
-  const openConfigBar = () => setShowConfigBar(true);
-  const closeConfigBar = () => setShowConfigBar(false);
   const toggleConfigBar = () => setShowConfigBar(prev => !prev);
 
-  const [tab, setTab] = useState<IDevices>("mobile");
-  const setMobileTab = () => setTab("mobile");
-  const setDesktopTab = () => setTab("desktop");
+  const sharedLayoutProps = {
+    showMobileConfigBar: showConfigBar,
+    showMobileConfigBarToggle: true,
+    onToggleConfigBar: toggleConfigBar,
+  };
 
   if (layout === "fixed") {
     return (
-      <FixedLayoutProvider device={tab}>
-        <FixedLayoutContainer
-          showConfigBar={showConfigBar}
-          openConfigBar={openConfigBar}
-          closeConfigBar={closeConfigBar}
-          toggleConfigBar={toggleConfigBar}
-          device={tab}
-          setMobileTab={setMobileTab}
-          setDesktopTab={setDesktopTab}
+      <FixedLayoutProvider>
+        <EditorLayout
+          {...sharedLayoutProps}
+          configBar={<FixedConfigBarContainer />}
+          board={<FixedBoardContainer />}
         />
       </FixedLayoutProvider>
     );
   }
 
   return (
-    <div>
-      <button onClick={() => setLayout("fixed")}>Fixed</button>
-      <button onClick={() => setLayout("responsive")} disabled>Responsive (WIP)</button>
-    </div>
+    <EditorLayout
+      {...sharedLayoutProps}
+      configBar={null}
+      board={(
+        <div>
+          <button onClick={() => setLayout("fixed")}>Fixed</button>
+          <button onClick={() => setLayout("responsive")} disabled>Responsive (WIP)</button>
+        </div>
+      )}
+    />
   );
 };
