@@ -18,3 +18,4 @@ export type {
   IDraggableFixedElement,
   IFixedElementsDict,
 } from "./IFixedLayout";
+export type { IPageInfo } from "./IPageInfo";

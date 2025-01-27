@@ -16,11 +16,13 @@ import {
   DuplicateIcon,
   DeleteIcon,
 } from "@/components";
+import { usePageInfo } from "@/context/PageInfoContext";
 
 type CommonElementDataKeys = Array<keyof CommonElementData>;
 const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opacity"];
 
 export const FixedConfigBarContainer: FC = () => {
+  const { name, editPageInfo } = usePageInfo();
   const {
     state: {
       selectedElement,
@@ -54,6 +56,10 @@ export const FixedConfigBarContainer: FC = () => {
 
   type TextAreaChangeHandler = ChangeEventHandler<HTMLTextAreaElement>;
   type InputChangeHandler = ChangeEventHandler<HTMLInputElement>;
+
+  const onNameChange: InputChangeHandler = (e) => {
+    editPageInfo({ name: e.currentTarget.value ?? "" });
+  };
 
   const onDuplicate = () => {
     if (selectedElement) {
@@ -90,7 +96,12 @@ export const FixedConfigBarContainer: FC = () => {
   return (
     <FixedConfigBar>
       <FixedModule>
-        <FixedSecretInput type="text" placeholder="Board name" />
+        <FixedSecretInput
+          type="text"
+          placeholder="Page name"
+          value={name ?? ""}
+          onChange={onNameChange}
+        />
         <button>Copy JSON</button>
       </FixedModule>
 
