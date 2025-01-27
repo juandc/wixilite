@@ -64,9 +64,11 @@ export const EditingImg: FC<Props> = ({
         zIndex: selected ? 5 : 3,
       }}
       onClick={containerOnClick}
+      data-testid="editing-img"
     >
       <img
         src={url}
+        alt={url}
         style={{
           borderRadius,
           cursor: "pointer",

@@ -88,6 +88,7 @@ export const EditingText: FC<Props> = ({
         zIndex: selected ? 5 : 4,
       }}
       onClick={containerOnClick}
+      data-testid="editing-text"
     >
       <div
         onBlur={onContentBlur}

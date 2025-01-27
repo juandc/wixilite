@@ -64,6 +64,7 @@ export const EditingRectangle: FC<Props> = ({
         zIndex: selected ? 5 : 2,
       }}
       onClick={containerOnClick}
+      data-testid="editing-rectangle"
     >
       <div
         style={{
