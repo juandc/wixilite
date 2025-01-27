@@ -27,7 +27,6 @@ export const FixedMobileBoard: FC<Props> = ({
         dndTypes.EDITING_IMAGE,
       ],
       drop(item: IDraggableFixedElement, monitor) {
-        console.log("drop", item);
         if (
           item.type === "fixed--editing-text"
           || item.type === "fixed--editing-img"

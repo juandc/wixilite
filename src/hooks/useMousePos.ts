@@ -33,12 +33,10 @@ export const useMousePos = ({
   };
 
   const stopResize = () => {
-    console.log("stopResize");
     setMousePos({ ...mousePos, active: false });
   };
 
   const startResize: MouseEventHandler<HTMLButtonElement> = (e) => {
-    console.log("startResize");
     e.preventDefault();
     e.stopPropagation();
     setMousePos({

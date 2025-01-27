@@ -1,27 +1,44 @@
 import { type FC } from "react";
+import { useShowConfigBar } from "@/context/ShowConfigBarContext";
 import { useFixedLayout } from "@/context/FixedLayoutContext";
-import { FixedMobileBoard } from "@/containers/FixedMobileBoard";
-import { EditingText } from "@/containers/EditingText";
-import { EditingImg } from "@/containers/EditingImg";
+import { FixedMobileBoard } from "@/containers/FixedLayoutContainer/FixedMobileBoard";
+import { EditingText } from "@/containers/FixedLayoutContainer/EditingText";
+import { EditingImg } from "@/containers/FixedLayoutContainer/EditingImg";
 import { DeviceTabs } from "@/components";
 
 export const FixedBoardContainer: FC = () => {
   const {
-    device,
-    elements,
-    elementIds,
-    selectedElementId,
-    setMobileTab,
-    setDesktopTab,
-    addElement,
-    moveElement,
-    setSelectedElementId,
-    editTextProps,
-    resizeElement,
+    isShowingConfigBar,
+    hideConfigBar,
+  } = useShowConfigBar();
+  const {
+    state: {
+      device,
+      elements,
+      elementIds,
+      selectedElementId,
+    },
+    updaters: {
+      setMobileTab,
+      setDesktopTab,
+      addElement,
+      moveElement,
+      setSelectedElementId,
+      resizeElement,
+      editTextProps,
+    },
   } = useFixedLayout();
 
+  const containerOnClick = () => {
+    if (isShowingConfigBar) {
+      hideConfigBar();
+    } else {
+      setSelectedElementId(undefined);
+    }
+  };
+
   return (
-    <div onClick={() => setSelectedElementId(undefined)}>
+    <div onClick={containerOnClick}>
       <div>
         <DeviceTabs
           selected={device}

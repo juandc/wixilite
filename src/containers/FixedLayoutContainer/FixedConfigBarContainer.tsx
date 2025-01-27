@@ -2,21 +2,30 @@ import { type ChangeEventHandler, type FC } from "react";
 import type { CommonElementData } from "@/types";
 import { defaultImages } from "@/utils/fixedElement";
 import { useFixedLayout } from "@/context/FixedLayoutContext";
-import { AddText } from "@/containers/AddText";
-import { AddImg } from "@/containers/AddImg";
+import { useShowConfigBar } from "@/context/ShowConfigBarContext";
+import { AddText } from "@/containers/FixedLayoutContainer/AddText";
+import { AddImg } from "@/containers/FixedLayoutContainer/AddImg";
 
 type CommonElementDataKeys = Array<keyof CommonElementData>;
 const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opacity"];
 
 export const FixedConfigBarContainer: FC = () => {
   const {
-    selectedElement,
-    duplicateElement,
-    deleteElement,
-    editSelectedElementImgProps,
-    editSelectedElementTextProps,
-    editSelectedElementCommonData,
+    state: {
+      selectedElement,
+    },
+    updaters: {
+      duplicateElement,
+      deleteElement,
+      editSelectedElementImgProps,
+      editSelectedElementTextProps,
+      editSelectedElementCommonData,
+    },
   } = useFixedLayout();
+
+  const {
+    hideConfigBar,
+  } = useShowConfigBar();
 
   const isTextSelected = selectedElement && selectedElement.type === "fixed--editing-text";
   const isImgSelected = selectedElement && selectedElement.type === "fixed--editing-img";
@@ -32,8 +41,24 @@ export const FixedConfigBarContainer: FC = () => {
   type TextAreaChangeHandler = ChangeEventHandler<HTMLTextAreaElement>;
   type InputChangeHandler = ChangeEventHandler<HTMLInputElement>;
 
+  const onDuplicate = () => {
+    if (selectedElement) {
+      duplicateElement(selectedElement.id);
+      hideConfigBar();
+    }
+  };
+
+  const onDelete = () => {
+    if (selectedElement) {
+      deleteElement(selectedElement.id);
+      hideConfigBar();
+    }
+  };
+
   const onCommonDataChange = (keyName: string): InputChangeHandler => {
     return (e) => {
+      console.log(e);
+      
       editSelectedElementCommonData({ [keyName]: Number(e.target.value) });
     };
   };
@@ -48,7 +73,6 @@ export const FixedConfigBarContainer: FC = () => {
 
   return (
     <>
-      Config Tab
       <input type="text" placeholder="Board name" />
       <button>Copy JSON</button>
       <AddText />
@@ -56,10 +80,10 @@ export const FixedConfigBarContainer: FC = () => {
 
       {selectedElement && (
         <>
-          <button onClick={() => duplicateElement(selectedElement.id)}>
+          <button onClick={onDuplicate}>
             Duplicate
           </button>
-          <button onClick={() => deleteElement(selectedElement.id)}>
+          <button onClick={onDelete}>
             Delete
           </button>
         </>

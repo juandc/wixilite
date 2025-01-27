@@ -7,6 +7,7 @@ import {
 import { useDrag } from "react-dnd";
 import sanitizeHtml from 'sanitize-html';
 import type { IFixedElementEditingText } from "@/types";
+import { initiallyIsTouchDevice } from "@/utils/isTouchDevice";
 import { dndTypes } from "@/constants/dnd";
 import { useMousePos } from "@/hooks/useMousePos";
 
@@ -69,6 +70,8 @@ export const EditingText: FC<Props> = ({
 
   const html = text.map(v => `<p>${v}</p>`).join("");
 
+  const showResize = selected && !initiallyIsTouchDevice;
+
   return (
     <div
       ref={dragRef}
@@ -115,7 +118,7 @@ export const EditingText: FC<Props> = ({
           bottom: 0,
           right: 0,
           cursor: "se-resize",
-          display: selected ? "block" : "none",
+          display: showResize ? "block" : "none",
         }}
       >
       </button>

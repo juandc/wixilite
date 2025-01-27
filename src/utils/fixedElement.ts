@@ -76,7 +76,6 @@ export const duplicateElementInElementsDict = (id: string, newId: string) => {
     element.id = newId;
     element.data.x += 40;
     element.data.y += 40;
-    console.log({ ...elements, [newId]: element });
     return { ...elements, [newId]: element };
   };
 };

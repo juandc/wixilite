@@ -57,6 +57,9 @@ type ContextState = {
   elementIds: string[];
   selectedElementId: string | undefined;
   selectedElement: IFixedElement | undefined;
+};
+
+type ContextUpdaters = {
   setMobileTab: () => void;
   setDesktopTab: () => void;
   setElements: (fn: (prev: IFixedElementsDict) => IFixedElementsDict) => void;
@@ -74,7 +77,12 @@ type ContextState = {
   editSelectedElementImgProps: (imgProps: IFixedElementEditingImgProps) => void;
 };
 
-export const FixedLayoutContext = createContext<ContextState | undefined>(undefined);
+type ContextValue = {
+  state: ContextState;
+  updaters: ContextUpdaters;
+};
+
+export const FixedLayoutContext = createContext<ContextValue | undefined>(undefined);
 
 export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   const [device, setDevice] = useState<IDevices>("mobile");
@@ -153,7 +161,7 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const states = {
+  const state = {
     device,
     elements,
     elementIds,
@@ -182,7 +190,7 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <FixedLayoutContext.Provider value={{ ...states, ...updaters }}>
+    <FixedLayoutContext.Provider value={{ state, updaters }}>
       {children}
     </FixedLayoutContext.Provider>
   );

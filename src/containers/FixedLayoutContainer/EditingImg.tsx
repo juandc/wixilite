@@ -4,6 +4,7 @@ import {
 } from "react";
 import { useDrag } from "react-dnd";
 import type { IFixedElementEditingImg } from "@/types";
+import { initiallyIsTouchDevice } from "@/utils/isTouchDevice";
 import { dndTypes } from "@/constants/dnd";
 import { useMousePos } from "@/hooks/useMousePos";
 
@@ -44,6 +45,8 @@ export const EditingImg: FC<Props> = ({
     e.stopPropagation();
     selectElement();
   };
+
+  const showResize = selected && !initiallyIsTouchDevice;
 
   return (
     <div
@@ -89,7 +92,7 @@ export const EditingImg: FC<Props> = ({
           bottom: 0,
           right: 0,
           cursor: "se-resize",
-          display: selected ? "block" : "none",
+          display: showResize ? "block" : "none",
         }}
       >
       </button>
