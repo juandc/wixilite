@@ -11,6 +11,8 @@ const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opaci
 export const FixedConfigBarContainer: FC = () => {
   const {
     selectedElement,
+    duplicateElement,
+    deleteElement,
     editSelectedElementImgProps,
     editSelectedElementTextProps,
     editSelectedElementCommonData,
@@ -51,6 +53,17 @@ export const FixedConfigBarContainer: FC = () => {
       <button>Copy JSON</button>
       <AddText />
       <AddImg />
+
+      {selectedElement && (
+        <>
+          <button onClick={() => duplicateElement(selectedElement.id)}>
+            Duplicate
+          </button>
+          <button onClick={() => deleteElement(selectedElement.id)}>
+            Delete
+          </button>
+        </>
+      )}
 
       {selectedCommonData?.map(prop => (
         <input

@@ -70,6 +70,25 @@ export const addElementToElementsDict = (type: IFixedElementNew["type"]) => (id:
   return (elements: IFixedElementsDict): IFixedElementsDict => elements;
 };
 
+export const duplicateElementInElementsDict = (id: string, newId: string) => {
+  return (elements: IFixedElementsDict): IFixedElementsDict => {
+    const element: IFixedElement = structuredClone(elements[id]);
+    element.id = newId;
+    element.data.x += 40;
+    element.data.y += 40;
+    console.log({ ...elements, [newId]: element });
+    return { ...elements, [newId]: element };
+  };
+};
+
+export const deleteElementInElementsDict = (id: string) => {
+  return (elements: IFixedElementsDict): IFixedElementsDict => {
+    const newElements = { ...elements };
+    delete newElements[id];
+    return newElements;
+  };
+};
+
 
 export const moveElementInElementsDict = (id: string, x: number, y: number) => {
   return (elements: IFixedElementsDict): IFixedElementsDict => {

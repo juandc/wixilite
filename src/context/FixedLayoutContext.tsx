@@ -14,7 +14,7 @@ import type {
   IFixedElementNew,
   IFixedElementsDict,
 } from "@/types";
-import { addElementToElementsDict, editImgPropsInElementsDict, editingImgDefaults, editingTextDefaults, editTextPropsInElementsDict, moveElementInElementsDict, resizeElementInElementsDict } from "@/utils/fixedElement";
+import { addElementToElementsDict, deleteElementInElementsDict, duplicateElementInElementsDict, editImgPropsInElementsDict, editingImgDefaults, editingTextDefaults, editTextPropsInElementsDict, moveElementInElementsDict, resizeElementInElementsDict } from "@/utils/fixedElement";
 
 type DeviceElementsDict = Record<IDevices, IFixedElementsDict>;
 
@@ -62,6 +62,8 @@ type ContextState = {
   setElements: (fn: (prev: IFixedElementsDict) => IFixedElementsDict) => void;
   setSelectedElementId: (id: string | undefined) => void;
   addElement: (type: IFixedElementNew["type"]) => (x: number, y: number) => void;
+  duplicateElement: (id: string) => void;
+  deleteElement: (id: string) => void;
   moveElement: (id: string) => (x: number, y: number) => void;
   resizeElement: (id: string) => (h: number, w: number) => void;
   editCommonElementData: (id: string) => (data: Partial<CommonElementData>) => void;
@@ -98,6 +100,17 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   const addElement = (type: IFixedElementNew["type"]) => (x: number, y: number) => {
     const id = `${Math.random()}`;
     setElements(addElementToElementsDict(type)(id, x, y));
+    setSelectedElementId(id);
+  };
+
+  const duplicateElement = (id: string) => {
+    const newId = `${Math.random()}`;
+    setElements(duplicateElementInElementsDict(id, newId));
+    setSelectedElementId(newId);
+  };
+
+  const deleteElement = (id: string) => {
+    setElements(deleteElementInElementsDict(id));
   };
 
   const moveElement = (id: string) => (x: number, y: number) => {
@@ -156,6 +169,8 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     setElements,
     setSelectedElementId,
     addElement,
+    duplicateElement,
+    deleteElement,
     moveElement,
     resizeElement,
     editCommonElementData,
