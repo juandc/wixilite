@@ -72,17 +72,15 @@ export const FixedMobileBoard: FC<Props> = ({
       id="fixed-mobile-board"
       ref={forkedRef}
       style={{
-        // border: "1px solid transparent",
-        border: isOver ? "2px solid white" : "none",
-        // borderColor: canDrop ? "red" : "white",
-        // backgroundColor: isOver ? "red" : "var(--page-inner-bg)",
+        boxShadow: isOver ? "0 0 0px 10px white" : "none",
         backgroundColor: "var(--page-inner-bg)",
-        opacity: canDrop ? 0.5 : 1,
+        opacity: canDrop ? isOver ? 0.75 : 0.5 : 1,
         width: "320px",
         minHeight: "400px",
         margin: "0 auto",
         position: "relative",
         overflow: isItemSelected ? "unset" : "hidden",
+        transition: "box-shadow 0.3s, opacity 0.3s",
       }}
     >
       {children}

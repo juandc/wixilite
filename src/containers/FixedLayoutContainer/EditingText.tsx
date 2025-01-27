@@ -26,7 +26,7 @@ export const EditingText: FC<Props> = ({
   ...item
 }) => {
   const {
-    data: { text, color, x, y, h, w, opacity },
+    data: { text, color, fontSize, textAlign, x, y, h, w, opacity },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -97,6 +97,8 @@ export const EditingText: FC<Props> = ({
         style={{
           cursor: "text",
           color,
+          fontSize,
+          textAlign,
           height: h,
           width: w,
           minWidth: "fit-content",

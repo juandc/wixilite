@@ -1,4 +1,4 @@
-import type { FC, InputHTMLAttributes, PropsWithChildren, ReactNode, TextareaHTMLAttributes } from "react";
+import type { FC, InputHTMLAttributes, PropsWithChildren, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 import "./FixedLayout.css";
 
 export const FixedConfigBar: FC<PropsWithChildren> = ({ children }) => (
@@ -100,6 +100,29 @@ export const FixedPropTextArea: FC<FixedPropTextAreaProps> = ({
         id={id}
         {...props}
       />
+    </div>
+  );
+};
+
+
+type FixedSelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  label?: string;
+};
+
+export const FixedSelect: FC<FixedSelectProps> = ({
+  className,
+  id,
+  label,
+  ...props
+}) => {
+  const labelText = label ?? id;
+  return (
+    <div
+      key={id}
+      className={`FixedSelect ${className}`}
+    >
+      <label htmlFor={id}>{labelText}: </label>
+      <select id={id} {...props} />
     </div>
   );
 };

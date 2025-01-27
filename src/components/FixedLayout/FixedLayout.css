@@ -122,6 +122,26 @@
   max-width: 100%;
 }
 
+.FixedSelect {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: .5rem;
+  width: 100%;
+}
+.FixedSelect label {
+  width: 100%;
+}
+.FixedSelect select {
+  border: none;
+  border-radius: .25rem;
+  text-align: center;
+  height: 2rem;
+  width: 9.5rem;
+}
+
 .FixedSecretInput input:focus,
 .FixedSecretInput input:focus-within,
 .FixedSecretInput input:focus-visible,
@@ -130,6 +150,9 @@
 .FixedPropInput input:focus-visible,
 .FixedPropTextArea textarea:focus,
 .FixedPropTextArea textarea:focus-within,
-.FixedPropTextArea textarea:focus-visible {
-  outline: 1px solid white;
+.FixedPropTextArea textarea:focus-visible,
+.FixedSelect select:focus,
+.FixedSelect select:focus-within,
+.FixedSelect select:focus-visible {
+  outline: 2px solid white;
 }

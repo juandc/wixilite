@@ -11,6 +11,8 @@ export type CommonElementData = {
 export type IFixedElementEditingTextData = {
   text: string[];
   color: string;
+  fontSize: number;
+  textAlign: CanvasTextAlign;
 } & CommonElementData;
 
 export type IFixedElementEditingTextProps = Partial<

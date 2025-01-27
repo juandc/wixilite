@@ -15,6 +15,7 @@ import {
   FixedSecretInput,
   DuplicateIcon,
   DeleteIcon,
+  FixedSelect,
 } from "@/components";
 import { usePageInfo } from "@/context/PageInfoContext";
 
@@ -192,6 +193,33 @@ export const FixedConfigBarContainer: FC = () => {
             value={selectedElement.data.color}
             onChange={onColorChange}
           />
+          <FixedPropInput
+            id="fontSize"
+            label="Font Size"
+            type="number"
+            value={selectedElement.data.fontSize}
+            onChange={e => {
+              editSelectedElementTextProps({ fontSize: Number(e.target.value) });
+            }}
+          />
+          <FixedSelect
+            id="textAlign"
+            label="Text Align"
+            value={selectedElement.data.textAlign}
+            onChange={e => {
+              if (
+                e.target.value === "left"
+                || e.target.value === "center"
+                || e.target.value === "right"
+              ) {
+                editSelectedElementTextProps({ textAlign: e.target.value });
+              }
+            }}
+          >
+            <option value="left">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+          </FixedSelect>
           <FixedPropTextArea
             id="text"
             label="Text"
