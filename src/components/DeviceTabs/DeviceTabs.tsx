@@ -8,11 +8,17 @@ type Props = {
   setDesktop: () => void;
 };
 
-export const DeviceTabs: FC<Props> = ({ setMobile, setDesktop }) => {
+export const DeviceTabs: FC<Props> = ({ selected, setMobile, setDesktop }) => {
   return (
     <div className="DeviceTabs">
-      <button onClick={setMobile}>Mobile</button>
-      <button onClick={setDesktop}>Desktop</button>
+      <button
+        className={`${selected === "mobile" ? "active" : ""}`}
+        onClick={setMobile}
+      >Mobile</button>
+      <button
+        className={`${selected === "desktop" ? "active" : ""}`}
+        onClick={setDesktop}
+      >Desktop</button>
     </div>
   );
 };

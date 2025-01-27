@@ -20,6 +20,7 @@
   bottom: 0;
   width: var(--config-bar-width);
   padding-top: var(--toggle-config-bar-area-margin);
+  overflow-y: scroll;
   z-index: var(--zindex-level-6);
 
   transform: translateX(calc(-1 * var(--config-bar-width)));

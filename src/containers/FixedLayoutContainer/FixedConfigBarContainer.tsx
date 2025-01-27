@@ -6,6 +6,16 @@ import { useShowConfigBar } from "@/context/ShowConfigBarContext";
 import { AddText } from "./AddText";
 import { AddImg } from "./AddImg";
 import { AddRectangle } from "./AddRectangle";
+import {
+  FixedAddDraggableElement,
+  FixedConfigBar,
+  FixedModule,
+  FixedPropInput,
+  FixedPropTextArea,
+  FixedSecretInput,
+  DuplicateIcon,
+  DeleteIcon,
+} from "@/components";
 
 type CommonElementDataKeys = Array<keyof CommonElementData>;
 const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opacity"];
@@ -78,120 +88,149 @@ export const FixedConfigBarContainer: FC = () => {
   };
 
   return (
-    <>
-      <input type="text" placeholder="Board name" />
-      <button>Copy JSON</button>
+    <FixedConfigBar>
+      <FixedModule>
+        <FixedSecretInput type="text" placeholder="Board name" />
+        <button>Copy JSON</button>
+      </FixedModule>
 
-      <div>
-        <AddText />
-        <button type="button" onClick={() => addElement("fixed--new-text")(0, 0)}>
-          Add Text
-        </button>
-      </div>
+      <FixedModule label="New elements">
+        <div style={{ marginTop: "-.5rem", marginBottom: "-.5rem" }}>
+          <FixedAddDraggableElement>
+            <AddText />
+            <button
+              type="button"
+              onClick={() => addElement("fixed--new-text")(0, 0)}
+            >+</button>
+          </FixedAddDraggableElement>
 
-      <div>
-        <AddImg />
-        <button type="button" onClick={() => addElement("fixed--new-img")(0, 0)}>
-          Add Image
-        </button>
-      </div>
+          <FixedAddDraggableElement>
+            <AddImg />
+            <button
+              type="button"
+              onClick={() => addElement("fixed--new-img")(0, 0)}
+            >+</button>
+          </FixedAddDraggableElement>
 
-      <div>
-        <AddRectangle />
-        <button type="button" onClick={() => addElement("fixed--new-rectangle")(0, 0)}>
-          Add Rectangle
-        </button>
-      </div>
+          <FixedAddDraggableElement>
+            <AddRectangle />
+            <button
+              type="button"
+              onClick={() => addElement("fixed--new-rectangle")(0, 0)}
+            >+</button>
+          </FixedAddDraggableElement>
+        </div>
+      </FixedModule>
 
       {selectedElement && (
-        <>
-          <button onClick={onDuplicate}>
-            Duplicate
-          </button>
-          <button onClick={onDelete}>
-            Delete
-          </button>
-        </>
+        <FixedModule
+          label="Element props"
+          labelBtns={(
+            <>
+              <button onClick={onDuplicate}>
+                <DuplicateIcon fill="white" />
+              </button>
+              <button onClick={onDelete}>
+                <DeleteIcon fill="white" />
+              </button>
+            </>
+          )}
+        >
+          {selectedCommonData?.map(prop => (
+            <FixedPropInput
+              type="number"
+              id={prop[0]}
+              placeholder={prop[0]}
+              value={prop[1]}
+              onChange={onCommonDataChange(prop[0])}
+              min={0}
+              max={prop[0] === "opacity" ? 1 : undefined}
+              step={prop[0] === "opacity" ? 0.1 : 1}
+            />
+          ))}
+        </FixedModule>
       )}
 
-      {selectedCommonData?.map(prop => (
-        <input
-          key={prop[0]}
-          type="number"
-          placeholder={prop[0]}
-          value={prop[1]}
-          onChange={onCommonDataChange(prop[0])}
-          min={0}
-          max={prop[0] === "opacity" ? 1 : undefined}
-          step={prop[0] === "opacity" ? 0.1 : 1}
-        />
-      ))}
 
       {(selectedElement && isTextSelected) && (
-        <>
-          <textarea
-            value={selectedElement.data.text.join("\n")}
-            onChange={onTextChange}
-          />
-          <input
+        <FixedModule label="Text props">
+          <FixedPropInput
+            id="color"
+            label="Color"
             type="color"
             value={selectedElement.data.color}
             onChange={onColorChange}
           />
-        </>
+          <FixedPropTextArea
+            id="text"
+            label="Text"
+            value={selectedElement.data.text.join("\n")}
+            onChange={onTextChange}
+          />
+        </FixedModule>
       )}
 
       {isImgSelected && (
-        <>
-          {defaultImages.map((img) => (
-            <button
-              key={img}
-              onClick={() => editSelectedElementImgProps({
-                url: img
-              })}
-              style={{
-                border: selectedElement.data.url === img ? "1px solid white" : "none",
-              }}
-            >
-              <img src={img} width={50} height={50} />
-            </button>
-          ))}
-
-          <input
-            value={selectedElement.data.url}
-            onChange={(e) => editSelectedElementImgProps({
-              url: e.target.value,
-            })
-            }
-          />
-
-          <input
+        <FixedModule label="Image props">
+          <FixedPropInput
+            id="borderRadiusImg"
+            label="Border Radius"
             type="number"
             value={selectedElement.data.borderRadius}
-            onChange={(e) => editSelectedElementImgProps({
+            onChange={e => editSelectedElementImgProps({
               borderRadius: Number(e.target.value),
             })}
           />
-        </>
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: "1rem",
+          }}>
+            {defaultImages.map((img) => (
+              <button
+                key={img}
+                onClick={() => editSelectedElementImgProps({ url: img })}
+                style={{
+                  border: (selectedElement.data.url === img
+                    ? "2px solid lightgray"
+                    : "none"
+                  ),
+                  width: "calc(50% - 1rem)",
+                }}
+              >
+                <img src={img} width={50} height={50} />
+              </button>
+            ))}
+          </div>
+          <FixedSecretInput
+            value={selectedElement.data.url}
+            onChange={e => editSelectedElementImgProps({ url: e.target.value })}
+          />
+        </FixedModule>
       )}
 
       {isRectangleSelected && (
-        <>
-          <input
+        <FixedModule label="Rectangle props">
+          <FixedPropInput
+            id="background"
+            label="Background"
             type="color"
             value={selectedElement.data.background}
             onChange={onBackgroundChange}
           />
 
-          <input
+          <FixedPropInput
+            id="borderRadiusRectangle"
+            label="Border Radius"
             type="number"
             value={selectedElement.data.borderRadius}
-            onChange={(e) => editSelectedElementRectangleProps({
+            onChange={e => editSelectedElementRectangleProps({
               borderRadius: Number(e.target.value),
             })}
           />
-        </>
+        </FixedModule>
       )}
-    </>
+    </FixedConfigBar>
   );
 };

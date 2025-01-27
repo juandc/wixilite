@@ -17,4 +17,8 @@
 
 .DeviceTabs button {
   height: var(--toggle-config-bar-size);
+  opacity: 0.6;
+}
+.DeviceTabs button.active {
+  opacity: 1;
 }
