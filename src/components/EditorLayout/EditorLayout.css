@@ -57,6 +57,7 @@
 }
 
 .EditorLayout_boardContainer {
+  background-color: var(--page-outer-bg, inherit);
   padding-top: var(--toggle-config-bar-area-margin);
   position: relative;
   min-height: 100dvh;

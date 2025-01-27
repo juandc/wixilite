@@ -4,6 +4,7 @@ import {
   createContext,
   useState,
   useContext,
+  CSSProperties,
 } from "react";
 import type { IPageInfo } from "@/types";
 
@@ -16,8 +17,8 @@ type ContextUpdaters = {
 const defaultPageInfo = {
   id: "default-page",
   name: "Untitled Landing",
-  innerBackground: "#fff",
-  outerBackground: "#222",
+  innerBackground: "#ffffff",
+  outerBackground: "#222222",
 };
 
 export const PageInfoContext = createContext<ContextState & ContextUpdaters | undefined>(undefined);
@@ -31,7 +32,9 @@ export const PageInfoProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <PageInfoContext.Provider value={{ ...pageInfo, editPageInfo }}>
-      {children}
+      <div style={{ "--page-inner-bg": pageInfo.innerBackground, "--page-outer-bg": pageInfo.outerBackground } as CSSProperties}>
+        {children}
+      </div>
     </PageInfoContext.Provider>
   );
 };

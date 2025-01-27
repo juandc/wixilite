@@ -22,7 +22,12 @@ type CommonElementDataKeys = Array<keyof CommonElementData>;
 const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opacity"];
 
 export const FixedConfigBarContainer: FC = () => {
-  const { name, editPageInfo } = usePageInfo();
+  const {
+    name,
+    innerBackground,
+    outerBackground,
+    editPageInfo,
+  } = usePageInfo();
   const {
     state: {
       selectedElement,
@@ -103,6 +108,21 @@ export const FixedConfigBarContainer: FC = () => {
           onChange={onNameChange}
         />
         <button>Copy JSON</button>
+
+        <FixedPropInput
+          id="innerBackground"
+          label="Inner Background"
+          type="color"
+          value={innerBackground}
+          onChange={(e) => editPageInfo({ innerBackground: e.target.value })}
+        />
+        <FixedPropInput
+          id="outerBackground"
+          label="Outer Background"
+          type="color"
+          value={outerBackground}
+          onChange={(e) => editPageInfo({ outerBackground: e.target.value })}
+        />
       </FixedModule>
 
       <FixedModule label="New elements">

@@ -74,7 +74,7 @@ export const FixedMobileBoard: FC<Props> = ({
       style={{
         border: "1px solid white",
         borderColor: canDrop ? "red" : "white",
-        backgroundColor: isOver ? "red" : "transparent",
+        backgroundColor: isOver ? "red" : "var(--page-inner-bg)",
         width: "320px",
         minHeight: "400px",
         margin: "0 auto",

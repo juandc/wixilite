@@ -15,7 +15,7 @@ import type {
 
 export const editingTextDefaults: IFixedElementEditingTextData = {
   text: ["New Text"],
-  color: "#FFFFFF",
+  color: "#000000",
   x: 0,
   y: 0,
   h: 38,
