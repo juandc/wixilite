@@ -135,6 +135,9 @@ export const FixedConfigBarContainer: FC = () => {
               onClick={() => editSelectedElementImgProps({
                 url: img
               })}
+              style={{
+                border: selectedElement.data.url === img ? "1px solid white" : "none",
+              }}
             >
               <img src={img} width={50} height={50} />
             </button>
