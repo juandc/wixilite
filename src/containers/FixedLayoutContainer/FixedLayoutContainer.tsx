@@ -1,7 +1,7 @@
 import { useShowConfigBar } from "@/context/ShowConfigBarContext";
+import { FixedConfigBarContainer } from "./ConfigBar/FixedConfigBarContainer";
+import { FixedBoardContainer } from "./Board/FixedBoardContainer";
 import { EditorLayout } from "@/components";
-import { FixedConfigBarContainer } from "./FixedConfigBarContainer";
-import { FixedBoardContainer } from "./FixedBoardContainer";
 
 export const FixedLayoutContainer = () => {
   const {

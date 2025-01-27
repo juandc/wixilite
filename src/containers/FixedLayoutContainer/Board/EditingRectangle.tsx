@@ -3,7 +3,7 @@ import {
   type MouseEventHandler,
 } from "react";
 import { useDrag } from "react-dnd";
-import type { IFixedElementEditingImg } from "@/types";
+import type { IFixedElementEditingRectangle } from "@/types";
 import { initiallyIsTouchDevice } from "@/utils/isTouchDevice";
 import { dndTypes } from "@/constants/dnd";
 import { useMousePos } from "@/hooks/useMousePos";
@@ -12,25 +12,24 @@ type Props = {
   resize: (h: number, w: number) => void;
   selected: boolean;
   selectElement: () => void;
-} & IFixedElementEditingImg;
+} & IFixedElementEditingRectangle;
 
-export const EditingImg: FC<Props> = ({
+export const EditingRectangle: FC<Props> = ({
   resize,
   selected,
   selectElement,
   ...item
 }) => {
   const {
-    data: { url, borderRadius, x, y, h, w, opacity },
+    data: { background, borderRadius, x, y, h, w, opacity },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
-      type: dndTypes.EDITING_IMAGE,
+      type: dndTypes.EDITING_RECTANGLE,
       item: { ...item },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      // TODO: select item on drag with (didDrop? isDragging?)
     }),
     [item],
   );
@@ -62,14 +61,14 @@ export const EditingImg: FC<Props> = ({
         left: x,
         width: "fit-content",
         height: "fit-content",
-        zIndex: selected ? 5 : 3,
+        zIndex: selected ? 5 : 2,
       }}
       onClick={containerOnClick}
     >
-      <img
-        src={url}
+      <div
         style={{
           borderRadius,
+          background,
           cursor: "pointer",
           height: h,
           width: w,

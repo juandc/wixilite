@@ -98,42 +98,6 @@ const initialElements: DeviceElementsDict = {
         h: 16,
       },
     },
-    // "1": {
-    //   id: "1",
-    //   type: "fixed--editing-text",
-    //   data: {
-    //     ...editingTextDefaults,
-    //     text: ["Hello World"],
-    //   },
-    // },
-    // "2": {
-    //   id: "2",
-    //   type: "fixed--editing-text",
-    //   data: {
-    //     ...editingTextDefaults,
-    //     text: ["Hello World 2"],
-    //     x: 100,
-    //     y: 100,
-    //   },
-    // },
-    // "3": {
-    //   id: "3",
-    //   type: "fixed--editing-img",
-    //   data: {
-    //     ...editingImgDefaults,
-    //     x: 50,
-    //     y: 250,
-    //   },
-    // },
-    // "4": {
-    //   id: "4",
-    //   type: "fixed--editing-rectangle",
-    //   data: {
-    //     ...editingRectangleDefaults,
-    //     x: 0,
-    //     y: 0,
-    //   },
-    // },
   },
   desktop: {},
 };
@@ -213,6 +177,7 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const moveElement = (id: string) => (x: number, y: number) => {
     setElements(moveElementInElementsDict(id, x, y));
+    setSelectedElementId(id);
   };
 
   const resizeElement = (id: string) => (h: number, w: number) => {

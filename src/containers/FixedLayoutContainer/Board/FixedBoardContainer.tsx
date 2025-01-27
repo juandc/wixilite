@@ -1,10 +1,10 @@
 import { type FC } from "react";
 import { useShowConfigBar } from "@/context/ShowConfigBarContext";
 import { useFixedLayout } from "@/context/FixedLayoutContext";
-import { FixedMobileBoard } from "@/containers/FixedLayoutContainer/FixedMobileBoard";
-import { EditingText } from "@/containers/FixedLayoutContainer/EditingText";
-import { EditingImg } from "@/containers/FixedLayoutContainer/EditingImg";
-import { EditingRectangle } from "@/containers/FixedLayoutContainer/EditingRectangle";
+import { FixedMobileBoard } from "./FixedMobileBoard";
+import { EditingText } from "./EditingText";
+import { EditingImg } from "./EditingImg";
+import { EditingRectangle } from "./EditingRectangle";
 import { DeviceTabs } from "@/components";
 
 export const FixedBoardContainer: FC = () => {

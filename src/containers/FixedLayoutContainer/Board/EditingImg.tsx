@@ -1,41 +1,35 @@
 import {
   type FC,
-  type FocusEvent,
   type MouseEventHandler,
-  useCallback,
 } from "react";
 import { useDrag } from "react-dnd";
-import sanitizeHtml from 'sanitize-html';
-import type { IFixedElementEditingText } from "@/types";
+import type { IFixedElementEditingImg } from "@/types";
 import { initiallyIsTouchDevice } from "@/utils/isTouchDevice";
 import { dndTypes } from "@/constants/dnd";
 import { useMousePos } from "@/hooks/useMousePos";
 
 type Props = {
-  editText: (text: string[]) => void;
   resize: (h: number, w: number) => void;
   selected: boolean;
   selectElement: () => void;
-} & IFixedElementEditingText;
+} & IFixedElementEditingImg;
 
-export const EditingText: FC<Props> = ({
-  editText,
+export const EditingImg: FC<Props> = ({
   resize,
   selected,
   selectElement,
   ...item
 }) => {
   const {
-    data: { text, color, fontSize, textAlign, x, y, h, w, opacity },
+    data: { url, borderRadius, x, y, h, w, opacity },
   } = item;
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
-      type: dndTypes.EDITING_TEXT,
+      type: dndTypes.EDITING_IMAGE,
       item: { ...item },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
-      // TODO: select item on drag with (didDrop? isDragging?)
     }),
     [item],
   );
@@ -50,25 +44,6 @@ export const EditingText: FC<Props> = ({
     e.stopPropagation();
     selectElement();
   };
-
-  const onContentBlur = useCallback(
-    (evt: FocusEvent) => {
-      const sanitizeOpts = { allowedTags: [], allowedAttributes: {} };
-      const sanitize = (v: string) => sanitizeHtml(v, sanitizeOpts);
-      const newHtml = evt.currentTarget.innerHTML;
-      const newValue = `${newHtml}`
-        .replaceAll('</p><p>', '<br>')
-        .replaceAll('<p>', '')
-        .replaceAll('</p>', '')
-        .split('<br>')
-        .map(sanitize)
-        .filter((v) => v.length);
-      editText(newValue);
-    },
-    []
-  );
-
-  const html = text.map(v => `<p>${v}</p>`).join("");
 
   const showResize = selected && !initiallyIsTouchDevice;
 
@@ -86,23 +61,17 @@ export const EditingText: FC<Props> = ({
         left: x,
         width: "fit-content",
         height: "fit-content",
-        zIndex: selected ? 5 : 4,
+        zIndex: selected ? 5 : 3,
       }}
       onClick={containerOnClick}
     >
-      <div
-        onBlur={onContentBlur}
-        contentEditable
-        dangerouslySetInnerHTML={{ __html: `${html}` }}
+      <img
+        src={url}
         style={{
-          cursor: "text",
-          color,
-          fontSize,
-          textAlign,
+          borderRadius,
+          cursor: "pointer",
           height: h,
           width: w,
-          minWidth: "fit-content",
-          minHeight: "fit-content",
           outline: "none"
         }}
       />
