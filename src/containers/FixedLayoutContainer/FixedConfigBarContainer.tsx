@@ -57,8 +57,6 @@ export const FixedConfigBarContainer: FC = () => {
 
   const onCommonDataChange = (keyName: string): InputChangeHandler => {
     return (e) => {
-      console.log(e);
-      
       editSelectedElementCommonData({ [keyName]: Number(e.target.value) });
     };
   };

@@ -72,9 +72,7 @@ export const EditingImg: FC<Props> = ({
           borderRadius,
           cursor: "pointer",
           height: h,
-          width: w, // TODO: how to deal with aspect ratio?
-          minWidth: "fit-content",
-          minHeight: "fit-content",
+          width: w,
           outline: "none"
         }}
       />
