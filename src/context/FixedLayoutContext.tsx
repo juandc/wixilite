@@ -33,42 +33,104 @@ type DeviceElementsDict = Record<IDevices, IFixedElementsDict>;
 
 const initialElements: DeviceElementsDict = {
   mobile: {
-    "1": {
-      id: "1",
-      type: "fixed--editing-text",
-      data: {
-        ...editingTextDefaults,
-        text: ["Hello World"],
-      },
-    },
-    "2": {
-      id: "2",
-      type: "fixed--editing-text",
-      data: {
-        ...editingTextDefaults,
-        text: ["Hello World 2"],
-        x: 100,
-        y: 100,
-      },
-    },
-    "3": {
-      id: "3",
+    "watermark": {
+      id: "watermark",
       type: "fixed--editing-img",
       data: {
         ...editingImgDefaults,
-        x: 50,
-        y: 250,
+        borderRadius: 12,
+        x: 274,
+        y: -4,
+        w: 45,
+        h: 45,
+        opacity: 0.5,
       },
     },
-    "4": {
-      id: "4",
+    "title": {
+      id: "title",
+      type: "fixed--editing-text",
+      data: {
+        ...editingTextDefaults,
+        text: ["JUANDC"],
+        color: "#CA6AEC",
+        x: 122,
+        y: 90,
+      },
+    },
+    "subtitle": {
+      id: "subtitle",
+      type: "fixed--editing-text",
+      data: {
+        ...editingTextDefaults,
+        text: ["Un puente para conectar diseño, desarrollo y educación"],
+        color: "#0E0319",
+        x: 48,
+        y: 142,
+        w: 222,
+        h: 20,
+      },
+    },
+    "buttonbg": {
+      id: "buttonbg",
       type: "fixed--editing-rectangle",
       data: {
         ...editingRectangleDefaults,
-        x: 0,
-        y: 0,
+        borderRadius: 12,
+        x: 80,
+        y: 212,
+        w: 145,
+        h: 40,
       },
     },
+    "buttontext": {
+      id: "buttontext",
+      type: "fixed--editing-text",
+      data: {
+        ...editingTextDefaults,
+        text: ["Contáctame"],
+        color: "#FFFFFF",
+        x: 111,
+        y: 220,
+        w: 90,
+        h: 16,
+      },
+    },
+    // "1": {
+    //   id: "1",
+    //   type: "fixed--editing-text",
+    //   data: {
+    //     ...editingTextDefaults,
+    //     text: ["Hello World"],
+    //   },
+    // },
+    // "2": {
+    //   id: "2",
+    //   type: "fixed--editing-text",
+    //   data: {
+    //     ...editingTextDefaults,
+    //     text: ["Hello World 2"],
+    //     x: 100,
+    //     y: 100,
+    //   },
+    // },
+    // "3": {
+    //   id: "3",
+    //   type: "fixed--editing-img",
+    //   data: {
+    //     ...editingImgDefaults,
+    //     x: 50,
+    //     y: 250,
+    //   },
+    // },
+    // "4": {
+    //   id: "4",
+    //   type: "fixed--editing-rectangle",
+    //   data: {
+    //     ...editingRectangleDefaults,
+    //     x: 0,
+    //     y: 0,
+    //   },
+    // },
   },
   desktop: {},
 };

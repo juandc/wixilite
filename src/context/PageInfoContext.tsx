@@ -17,8 +17,8 @@ type ContextUpdaters = {
 const defaultPageInfo = {
   id: "default-page",
   name: "Untitled Landing",
-  innerBackground: "#ffffff",
-  outerBackground: "#222222",
+  innerBackground: "#F9ECFF",
+  outerBackground: "#15011E",
 };
 
 export const PageInfoContext = createContext<ContextState & ContextUpdaters | undefined>(undefined);
