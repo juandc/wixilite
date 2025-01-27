@@ -24,6 +24,7 @@ const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opaci
 
 export const FixedConfigBarContainer: FC = () => {
   const {
+    id,
     name,
     innerBackground,
     outerBackground,
@@ -31,6 +32,7 @@ export const FixedConfigBarContainer: FC = () => {
   } = usePageInfo();
   const {
     state: {
+      elements,
       selectedElement,
     },
     updaters: {
@@ -59,6 +61,15 @@ export const FixedConfigBarContainer: FC = () => {
         return commonElementDataKeys.includes(key as keyof CommonElementData);
       }) as Array<[string, number]>; // TODO: come on, should be a better way
   }
+
+  const exportData = () => {
+    console.info({
+      id,
+      name,
+      attrs: { innerBackground, outerBackground },
+      elements,
+    });
+  };
 
   type TextAreaChangeHandler = ChangeEventHandler<HTMLTextAreaElement>;
   type InputChangeHandler = ChangeEventHandler<HTMLInputElement>;
@@ -108,7 +119,7 @@ export const FixedConfigBarContainer: FC = () => {
           value={name ?? ""}
           onChange={onNameChange}
         />
-        <button>Copy JSON</button>
+        <button onClick={exportData}>Export JSON (console)</button>
 
         <FixedPropInput
           id="innerBackground"

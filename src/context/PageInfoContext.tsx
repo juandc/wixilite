@@ -18,7 +18,7 @@ const defaultPageInfo = {
   id: "default-page",
   name: "Untitled Landing",
   innerBackground: "#F9ECFF",
-  outerBackground: "#15011E",
+  outerBackground: "#222222",
 };
 
 export const PageInfoContext = createContext<ContextState & ContextUpdaters | undefined>(undefined);

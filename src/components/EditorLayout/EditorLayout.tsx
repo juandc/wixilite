@@ -1,5 +1,6 @@
 import type { FC, ReactNode } from "react";
 import "./EditorLayout.css";
+import { MenuIcon } from "../icons/Menu";
 
 type Props = {
   configBar: ReactNode;
@@ -26,7 +27,9 @@ export const EditorLayout: FC<Props> = ({
           <button
             className="EditorLayout_toggleConfigBarBtn"
             onClick={onToggleConfigBar}
-          >x</button>
+          >
+            <MenuIcon fill="white" />
+          </button>
         )}
         {configBar}
       </aside>
@@ -36,7 +39,9 @@ export const EditorLayout: FC<Props> = ({
           <button
             className="EditorLayout_toggleConfigBarBtn"
             onClick={onToggleConfigBar}
-          >x</button>
+          >
+            <MenuIcon fill="white" />
+          </button>
         )}
         {board}
       </div>
