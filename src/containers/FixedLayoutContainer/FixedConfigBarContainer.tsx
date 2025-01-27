@@ -15,6 +15,7 @@ export const FixedConfigBarContainer: FC = () => {
       selectedElement,
     },
     updaters: {
+      addElement,
       duplicateElement,
       deleteElement,
       editSelectedElementImgProps,
@@ -73,8 +74,20 @@ export const FixedConfigBarContainer: FC = () => {
     <>
       <input type="text" placeholder="Board name" />
       <button>Copy JSON</button>
-      <AddText />
-      <AddImg />
+
+      <div>
+        <AddText />
+        <button type="button" onClick={() => addElement("fixed--new-text")(0, 0)}>
+          Add Text
+        </button>
+      </div>
+
+      <div>
+        <AddImg />
+        <button type="button" onClick={() => addElement("fixed--new-img")(0, 0)}>
+          Add Image
+        </button>
+      </div>
 
       {selectedElement && (
         <>
