@@ -4,6 +4,7 @@ import { useFixedLayout } from "@/context/FixedLayoutContext";
 import { FixedMobileBoard } from "@/containers/FixedLayoutContainer/FixedMobileBoard";
 import { EditingText } from "@/containers/FixedLayoutContainer/EditingText";
 import { EditingImg } from "@/containers/FixedLayoutContainer/EditingImg";
+import { EditingRectangle } from "@/containers/FixedLayoutContainer/EditingRectangle";
 import { DeviceTabs } from "@/components";
 
 export const FixedBoardContainer: FC = () => {
@@ -70,6 +71,17 @@ export const FixedBoardContainer: FC = () => {
                 if (element.type === "fixed--editing-img") {
                   return (
                     <EditingImg
+                      key={element.id}
+                      {...element}
+                      resize={resizeElement(elementId)}
+                      selected={selectedElementId === element.id}
+                      selectElement={() => setSelectedElementId(element.id)}
+                    />
+                  );
+                }
+                if (element.type === "fixed--editing-rectangle") {
+                  return (
+                    <EditingRectangle
                       key={element.id}
                       {...element}
                       resize={resizeElement(elementId)}

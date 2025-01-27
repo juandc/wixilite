@@ -10,11 +10,24 @@ import type {
   IDevices,
   IFixedElement,
   IFixedElementEditingImgProps,
+  IFixedElementEditingRectangleProps,
   IFixedElementEditingTextProps,
   IFixedElementNew,
   IFixedElementsDict,
 } from "@/types";
-import { addElementToElementsDict, deleteElementInElementsDict, duplicateElementInElementsDict, editImgPropsInElementsDict, editingImgDefaults, editingTextDefaults, editTextPropsInElementsDict, moveElementInElementsDict, resizeElementInElementsDict } from "@/utils/fixedElement";
+import {
+  addElementToElementsDict,
+  deleteElementInElementsDict,
+  duplicateElementInElementsDict,
+  editImgPropsInElementsDict,
+  editingImgDefaults,
+  editingRectangleDefaults,
+  editingTextDefaults,
+  editRectanglePropsInElementsDict,
+  editTextPropsInElementsDict,
+  moveElementInElementsDict,
+  resizeElementInElementsDict,
+} from "@/utils/fixedElement";
 
 type DeviceElementsDict = Record<IDevices, IFixedElementsDict>;
 
@@ -47,6 +60,15 @@ const initialElements: DeviceElementsDict = {
         y: 250,
       },
     },
+    "4": {
+      id: "4",
+      type: "fixed--editing-rectangle",
+      data: {
+        ...editingRectangleDefaults,
+        x: 0,
+        y: 0,
+      },
+    },
   },
   desktop: {},
 };
@@ -75,6 +97,8 @@ type ContextUpdaters = {
   editSelectedElementTextProps: (textProps: IFixedElementEditingTextProps) => void;
   editImgProps: (id: string) => (imgProps: IFixedElementEditingImgProps) => void;
   editSelectedElementImgProps: (imgProps: IFixedElementEditingImgProps) => void;
+  editRectangleProps: (id: string) => (rectangleProps: IFixedElementEditingRectangleProps) => void;
+  editSelectedElementRectangleProps: (rectangleProps: IFixedElementEditingRectangleProps) => void;
 };
 
 type ContextValue = {
@@ -104,6 +128,7 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedElement = selectedElementId ? elements[selectedElementId] : undefined;
   const isTextSelected = (selectedElement && selectedElement.type === "fixed--editing-text") ?? false;
   const isImgSelected = (selectedElement && selectedElement.type === "fixed--editing-img") ?? false;
+  const isRectangleSelected = (selectedElement && selectedElement.type === "fixed--editing-rectangle") ?? false;
 
   const addElement = (type: IFixedElementNew["type"]) => (x: number, y: number) => {
     const id = `${Math.random()}`;
@@ -161,6 +186,16 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const editRectangleProps = (id: string) => (rectangleProps: IFixedElementEditingRectangleProps) => {
+    setElements(editRectanglePropsInElementsDict(id, rectangleProps));
+  };
+
+  const editSelectedElementRectangleProps = (rectangleProps: IFixedElementEditingRectangleProps) => {
+    if (selectedElementId && isRectangleSelected) {
+      editRectangleProps(selectedElementId)(rectangleProps);
+    }
+  };
+
   const state = {
     device,
     elements,
@@ -187,6 +222,8 @@ export const FixedLayoutProvider: FC<PropsWithChildren> = ({ children }) => {
     editSelectedElementTextProps,
     editImgProps,
     editSelectedElementImgProps,
+    editRectangleProps,
+    editSelectedElementRectangleProps,
   };
 
   return (

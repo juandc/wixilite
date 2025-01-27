@@ -3,8 +3,9 @@ import type { CommonElementData } from "@/types";
 import { defaultImages } from "@/utils/fixedElement";
 import { useFixedLayout } from "@/context/FixedLayoutContext";
 import { useShowConfigBar } from "@/context/ShowConfigBarContext";
-import { AddText } from "@/containers/FixedLayoutContainer/AddText";
-import { AddImg } from "@/containers/FixedLayoutContainer/AddImg";
+import { AddText } from "./AddText";
+import { AddImg } from "./AddImg";
+import { AddRectangle } from "./AddRectangle";
 
 type CommonElementDataKeys = Array<keyof CommonElementData>;
 const commonElementDataKeys: CommonElementDataKeys = ["h", "w", "x", "y", "opacity"];
@@ -18,9 +19,10 @@ export const FixedConfigBarContainer: FC = () => {
       addElement,
       duplicateElement,
       deleteElement,
+      editSelectedElementCommonData,
       editSelectedElementImgProps,
       editSelectedElementTextProps,
-      editSelectedElementCommonData,
+      editSelectedElementRectangleProps,
     },
   } = useFixedLayout();
 
@@ -30,6 +32,7 @@ export const FixedConfigBarContainer: FC = () => {
 
   const isTextSelected = selectedElement && selectedElement.type === "fixed--editing-text";
   const isImgSelected = selectedElement && selectedElement.type === "fixed--editing-img";
+  const isRectangleSelected = selectedElement && selectedElement.type === "fixed--editing-rectangle";
 
   let selectedCommonData: Array<[string, number]> = []; // TODO: only numbers?
   if (selectedElement) {
@@ -70,6 +73,10 @@ export const FixedConfigBarContainer: FC = () => {
     editSelectedElementTextProps({ color: e.target.value });
   };
 
+  const onBackgroundChange: InputChangeHandler = (e) => {
+    editSelectedElementRectangleProps({ background: e.target.value });
+  };
+
   return (
     <>
       <input type="text" placeholder="Board name" />
@@ -86,6 +93,13 @@ export const FixedConfigBarContainer: FC = () => {
         <AddImg />
         <button type="button" onClick={() => addElement("fixed--new-img")(0, 0)}>
           Add Image
+        </button>
+      </div>
+
+      <div>
+        <AddRectangle />
+        <button type="button" onClick={() => addElement("fixed--new-rectangle")(0, 0)}>
+          Add Rectangle
         </button>
       </div>
 
@@ -155,6 +169,24 @@ export const FixedConfigBarContainer: FC = () => {
             type="number"
             value={selectedElement.data.borderRadius}
             onChange={(e) => editSelectedElementImgProps({
+              borderRadius: Number(e.target.value),
+            })}
+          />
+        </>
+      )}
+
+      {isRectangleSelected && (
+        <>
+          <input
+            type="color"
+            value={selectedElement.data.background}
+            onChange={onBackgroundChange}
+          />
+
+          <input
+            type="number"
+            value={selectedElement.data.borderRadius}
+            onChange={(e) => editSelectedElementRectangleProps({
               borderRadius: Number(e.target.value),
             })}
           />

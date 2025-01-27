@@ -48,8 +48,28 @@ export type IFixedElementNewImg = {
 };
 
 
-export type IFixedElement = IFixedElementEditingText | IFixedElementEditingImg;
-export type IFixedElementNew = IFixedElementNewText | IFixedElementNewImg;
+export type IFixedElementEditingRectangleData = {
+  background: string;
+  borderRadius: number;
+} & CommonElementData;
+
+export type IFixedElementEditingRectangleProps = Partial<
+  Omit<IFixedElementEditingRectangleData, keyof CommonElementData>
+>;
+
+export type IFixedElementEditingRectangle = {
+  id: string;
+  type: "fixed--editing-rectangle";
+  data: IFixedElementEditingRectangleData;
+};
+
+export type IFixedElementNewRectangle = {
+  type: "fixed--new-rectangle";
+};
+
+
+export type IFixedElement = IFixedElementEditingText | IFixedElementEditingImg | IFixedElementEditingRectangle;
+export type IFixedElementNew = IFixedElementNewText | IFixedElementNewImg | IFixedElementNewRectangle;
 export type IDraggableFixedElement = IFixedElement | IFixedElementNew;
 
 export type IFixedElementsDict = Record<string, IFixedElement>;

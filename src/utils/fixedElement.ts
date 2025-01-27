@@ -6,6 +6,9 @@ import type {
   IFixedElementEditingText,
   IFixedElementEditingTextData,
   IFixedElementEditingTextProps,
+  IFixedElementEditingRectangleData,
+  IFixedElementEditingRectangleProps,
+  IFixedElementEditingRectangle,
   IFixedElementNew,
   IFixedElementsDict,
 } from "@/types";
@@ -38,6 +41,16 @@ export const editingImgDefaults: IFixedElementEditingImgData = {
   opacity: 1,
 };
 
+export const editingRectangleDefaults: IFixedElementEditingRectangleData = {
+  background: "#25c26a",
+  borderRadius: 0,
+  x: 0,
+  y: 0,
+  h: 140,
+  w: 140,
+  opacity: 1,
+};
+
 
 export const addTextElementToElementsDict = (id: string, x: number, y: number) => {
   return (elements: IFixedElementsDict): IFixedElementsDict => {
@@ -61,11 +74,24 @@ export const addImgElementToElementsDict = (id: string, x: number, y: number) =>
   };
 };
 
+export const addRectangleElementToElementsDict = (id: string, x: number, y: number) => {
+  return (elements: IFixedElementsDict): IFixedElementsDict => {
+    const element: IFixedElementEditingRectangle = {
+      id,
+      type: "fixed--editing-rectangle",
+      data: { ...editingRectangleDefaults, x, y },
+    };
+    return { ...elements, [id]: element };
+  };
+};
+
 export const addElementToElementsDict = (type: IFixedElementNew["type"]) => (id: string, x: number, y: number) => {
   if (type === "fixed--new-text") {
     return addTextElementToElementsDict(id, x, y);
   } else if (type === "fixed--new-img") {
     return addImgElementToElementsDict(id, x, y);
+  } else if (type === "fixed--new-rectangle") {
+    return addRectangleElementToElementsDict(id, x, y);
   }
   return (elements: IFixedElementsDict): IFixedElementsDict => elements;
 };
@@ -124,6 +150,18 @@ export const editImgPropsInElementsDict = (id: string, imgProps: IFixedElementEd
   return (elements: IFixedElementsDict): IFixedElementsDict => {
     if (elements[id].type === "fixed--editing-img") {
       const element: IFixedElementEditingImg = { ...elements[id] };
+      element.data = { ...element.data, ...imgProps };
+      return { ...elements, [id]: element };
+    }
+    return elements;
+  };
+}
+
+
+export const editRectanglePropsInElementsDict = (id: string, imgProps: IFixedElementEditingRectangleProps) => {
+  return (elements: IFixedElementsDict): IFixedElementsDict => {
+    if (elements[id].type === "fixed--editing-rectangle") {
+      const element: IFixedElementEditingRectangle = { ...elements[id] };
       element.data = { ...element.data, ...imgProps };
       return { ...elements, [id]: element };
     }

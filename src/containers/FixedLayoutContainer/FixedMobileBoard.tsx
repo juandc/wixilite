@@ -25,11 +25,14 @@ export const FixedMobileBoard: FC<Props> = ({
         dndTypes.EDITING_TEXT,
         dndTypes.ADD_IMAGE,
         dndTypes.EDITING_IMAGE,
+        dndTypes.ADD_RECTANGLE,
+        dndTypes.EDITING_RECTANGLE,
       ],
       drop(item: IDraggableFixedElement, monitor) {
         if (
           item.type === "fixed--editing-text"
           || item.type === "fixed--editing-img"
+          || item.type === "fixed--editing-rectangle"
         ) {
           const delta = monitor.getDifferenceFromInitialOffset() as XYCoord;
           const newPos = {
@@ -40,6 +43,7 @@ export const FixedMobileBoard: FC<Props> = ({
         } else if (
           item.type === "fixed--new-text"
           || item.type === "fixed--new-img"
+          || item.type === "fixed--new-rectangle"
         ) {
           const boundingRect = boundingRef.current?.getBoundingClientRect() ?? {
             x: 0,
