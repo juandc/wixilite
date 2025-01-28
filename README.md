@@ -1,9 +1,14 @@
 # WixiLite
 
-Frontend JavaScript Developer test asignment for MailerLite.
+Frontend JavaScript Developer test asignment for MailerLite. [Demo here](https://wixilite.vercel.app/).
 
 
 ## Requirements
+
+- Build a simple drag & drop landing page builder using any of Vue.js, Angular, React. Extra points for using Vue.js.
+
+This version is built using React.js. But the last 1-2 asignment days I replicated the project in Vue.js, you can check it out [here](https://github.com/juandc/wixilite-vue).
+
 
 - Create 2 draggable blocks: Text and Image.
 
