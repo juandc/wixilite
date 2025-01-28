@@ -182,6 +182,7 @@ export const FixedConfigBarContainer: FC = () => {
           {selectedCommonData?.map(prop => (
             <FixedPropInput
               type="number"
+              key={prop[0]}
               id={prop[0]}
               placeholder={prop[0]}
               value={prop[1]}

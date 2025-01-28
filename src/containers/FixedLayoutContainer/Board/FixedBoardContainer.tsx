@@ -96,8 +96,8 @@ export const FixedBoardContainer: FC = () => {
         )}
 
         {device === "desktop" && (
-          <div data-testid="fixed-desktop-board">
-            Board desktop
+          <div data-testid="fixed-desktop-board" style={{ width: "100%", height: "100%", textAlign: "center" }}>
+            Board desktop (soon)
           </div>
         )}
       </div>

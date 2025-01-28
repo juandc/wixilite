@@ -17,7 +17,7 @@ type ContextUpdaters = {
 const defaultPageInfo = {
   id: "default-page",
   name: "Untitled Landing",
-  innerBackground: "#F9ECFF",
+  innerBackground: "#FFC2FD",
   outerBackground: "#222222",
 };
 

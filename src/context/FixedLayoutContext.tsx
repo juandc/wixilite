@@ -52,7 +52,7 @@ const initialElements: DeviceElementsDict = {
       data: {
         ...editingTextDefaults,
         text: ["JUANDC"],
-        color: "#CA6AEC",
+        color: "#BE41EC",
         fontSize: 21,
         x: 111,
         y: 90,
